@@ -10,17 +10,33 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
-    
-    private var bomb : SKShapeNode?
-    
+
     override func didMove(to view: SKView) {
         
-        self.bomb = self.childNode(withName: "//bomb") as? SKShapeNode
-        
-        if let bomb = self.bomb {
-
-        }
+        self.addBomb()
+        self.addBomb()
+        self.addBomb()
     }
+    
+    func addBomb() {
+        
+        let bomb = SKSpriteNode(imageNamed: "bomb")
+        //let actualY = random(min: bomb.size.height/2, max: size.height - bomb.size.height/2)
+        bomb.position = CGPoint(x: -320, y: 0)
+        bomb.size = CGSize(width: 15, height: 30)
+        bomb.zPosition = 3
+
+        addChild(bomb)
+        
+        //let actualDuration = random(min: CGFloat(2.0), max: CGFloat(4.0))
+        
+        let actionMove = SKAction.move(to: CGPoint(x: 320, y: 0), duration: 10)
+        let actionMove2 = SKAction.rotate(byAngle: -1, duration: 0.3)
+        //let actionMoveDone = SKAction.removeFromParent()
+        //bomb.run(SKAction.sequence([actionMove, actionMoveDone]))
+        bomb.run(SKAction.repeatForever((SKAction.sequence([actionMove2, actionMove]))))
+    }
+    
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
