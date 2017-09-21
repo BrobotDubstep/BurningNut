@@ -30,11 +30,12 @@ class GameScene: SKScene {
         
         //let actualDuration = random(min: CGFloat(2.0), max: CGFloat(4.0))
         
-        let actionMove = SKAction.move(to: CGPoint(x: 320, y: 0), duration: 10)
-        let actionMove2 = SKAction.rotate(byAngle: -1, duration: 0.3)
+        let moveBomb = SKAction.move(to: CGPoint(x: 320, y: 0), duration: 10)
+        let rotateBomb = SKAction.rotate(byAngle: -1, duration: 0.3)
         //let actionMoveDone = SKAction.removeFromParent()
         //bomb.run(SKAction.sequence([actionMove, actionMoveDone]))
-        bomb.run(SKAction.repeatForever((SKAction.sequence([actionMove2, actionMove]))))
+        let groupBomb = SKAction.group([moveBomb, rotateBomb])
+        bomb.run(SKAction.repeatForever(groupBomb))
     }
     
     
