@@ -27,9 +27,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         
         self.setupMatchfield()
-        self.addBomb()
+        //self.addBomb()
         
-        self.physicsWorld.gravity = CGVector.init(dx: 0.0, dy: -6)
+        self.physicsWorld.gravity = CGVector.init(dx: 0.0, dy: 0)
         physicsWorld.contactDelegate = self
     }
     
@@ -60,10 +60,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         squirrel.removeFromParent()
     }
     
-    func addBomb() {
+    func addBomb(player: SKSpriteNode, position: CGPoint) {
         
         let bomb = SKSpriteNode(imageNamed: "bomb")
-        bomb.position = CGPoint(x: leftSquirrel.position.x, y: 0)
+        bomb.position = CGPoint(x: player.position.x, y: player.position.y)
         bomb.size = CGSize(width: 15, height: 30)
         bomb.zPosition = 1
         
@@ -75,7 +75,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         addChild(bomb)
         
-        let moveBomb = SKAction.move(to: CGPoint(x: 320, y: 0), duration: 8)
+        let moveBomb = SKAction.move(to: CGPoint(x: position.x, y: position.y), duration: 8)
         let rotateBomb = SKAction.rotate(byAngle: -20, duration: 8)
         let groupBomb = SKAction.group([moveBomb, rotateBomb])
         bomb.run(SKAction.repeatForever(groupBomb))
@@ -84,6 +84,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
     }
+    
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        guard let touch = touches.first else {
+            return
+        }
+        let touchLocation = touch.location(in: self)
+        
+        addBomb(player: leftSquirrel, position: touchLocation)
+    }
+    
+    
+    
     
     func setupMatchfield() {
         
@@ -100,7 +114,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         rightSquirrel.anchorPoint.y = 0.5
         rightSquirrel.zPosition = 1
         rightSquirrel.physicsBody = SKPhysicsBody(rectangleOf: rightSquirrel.size)
-        rightSquirrel.physicsBody?.isDynamic = true
+        rightSquirrel.physicsBody?.isDynamic = false
         rightSquirrel.physicsBody?.categoryBitMask = PhysicsCategory.Squirrel
         rightSquirrel.physicsBody?.contactTestBitMask = PhysicsCategory.Bomb
         rightSquirrel.physicsBody?.collisionBitMask = PhysicsCategory.None
