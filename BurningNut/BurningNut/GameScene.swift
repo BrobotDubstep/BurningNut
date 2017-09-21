@@ -55,7 +55,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func projectileDidCollideWithMonster(bomb: SKSpriteNode, squirrel: SKSpriteNode) {
-        print("Hit")
+        
+        let explosion = SKSpriteNode(imageNamed: "explosion")
+        explosion.position = bomb.position
+        explosion.size = CGSize(width: 40, height: 40)
+        explosion.zPosition = 1
+        addChild(explosion)
+        run(SKAction.playSoundFileNamed("explosion.mp3", waitForCompletion: true))
         bomb.removeFromParent()
         squirrel.removeFromParent()
     }
@@ -79,10 +85,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let rotateBomb = SKAction.rotate(byAngle: -20, duration: 8)
         let groupBomb = SKAction.group([moveBomb, rotateBomb])
         bomb.run(SKAction.repeatForever(groupBomb))
-    }
-    
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
     }
     
     func setupMatchfield() {
