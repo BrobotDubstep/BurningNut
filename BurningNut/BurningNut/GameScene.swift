@@ -12,8 +12,8 @@ import GameplayKit
 struct PhysicsCategory {
     static let None      : UInt32 = 0
     static let All       : UInt32 = UInt32.max
-    static let Sqirrel   : UInt32 = 0b1
-    static let Bomb: UInt32 = 0b10
+    static let Squirrel   : UInt32 = 1
+    static let Bomb: UInt32 = 2
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
@@ -29,24 +29,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.setupMatchfield()
         self.addBomb()
         
+         self.physicsWorld.gravity = CGVector.init(dx: 0.0, dy: -6)
+        
        
     }
     
     func addBomb() {
         
         let bomb = SKSpriteNode(imageNamed: "bomb")
-        bomb.position = CGPoint(x: -320, y: 0)
+        bomb.position = CGPoint(x: leftSquirrel.position.x, y: leftSquirrel.position.y)
         bomb.size = CGSize(width: 15, height: 30)
-        bomb.zPosition = 3
+        bomb.zPosition = 1
         
         bomb.physicsBody = SKPhysicsBody(rectangleOf: bomb.size)
         bomb.physicsBody?.categoryBitMask = PhysicsCategory.Bomb
-        bomb.physicsBody?.contactTestBitMask = PhysicsCategory.Sqirrel
+        bomb.physicsBody?.contactTestBitMask = PhysicsCategory.Squirrel
         bomb.physicsBody?.collisionBitMask = PhysicsCategory.None
 
         addChild(bomb)
         
-        let moveBomb = SKAction.move(to: CGPoint(x: 320, y: 0), duration: 8)
+        let moveBomb = SKAction.move(to: CGPoint(x: rightSquirrel.position.x, y: rightSquirrel.position.y), duration: 8)
         let rotateBomb = SKAction.rotate(byAngle: -20, duration: 8)
         let groupBomb = SKAction.group([moveBomb, rotateBomb])
         bomb.run(SKAction.repeatForever(groupBomb))
@@ -65,11 +67,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         leftSquirrel.zPosition = 1
         addChild(leftSquirrel)
         
-        rightSquirrel.position = CGPoint(x: 307.839, y: -89.305)
+        rightSquirrel.position = CGPoint(x: 280.839, y: -89.305)
         rightSquirrel.size = CGSize(width: 51.321, height: 59.464)
         rightSquirrel.anchorPoint.x = 0.5
         rightSquirrel.anchorPoint.y = 0.5
         rightSquirrel.zPosition = 1
+        rightSquirrel.physicsBody = SKPhysicsBody(rectangleOf: rightSquirrel.size)
+        rightSquirrel.physicsBody?.isDynamic = false
+        rightSquirrel.physicsBody?.categoryBitMask = PhysicsCategory.Squirrel
+        rightSquirrel.physicsBody?.contactTestBitMask = PhysicsCategory.Bomb
+        rightSquirrel.physicsBody?.collisionBitMask = PhysicsCategory.None
+        rightSquirrel.physicsBody?.affectedByGravity = false
         addChild(rightSquirrel)
         
         middleTree.position = CGPoint(x: 0, y: -4.238)
