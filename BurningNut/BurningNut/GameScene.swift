@@ -9,7 +9,14 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+struct PhysicsCategory {
+    static let None      : UInt32 = 0
+    static let All       : UInt32 = UInt32.max
+    static let Sqirrel   : UInt32 = 0b1
+    static let Bomb: UInt32 = 0b10
+}
+
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
     let leftSquirrel = SKSpriteNode(imageNamed: "minisquirrelRight")
     let rightSquirrel = SKSpriteNode(imageNamed: "minisquirrel")
@@ -31,6 +38,11 @@ class GameScene: SKScene {
         bomb.position = CGPoint(x: -320, y: 0)
         bomb.size = CGSize(width: 15, height: 30)
         bomb.zPosition = 3
+        
+        bomb.physicsBody = SKPhysicsBody(rectangleOf: bomb.size)
+        bomb.physicsBody?.categoryBitMask = PhysicsCategory.Bomb
+        bomb.physicsBody?.contactTestBitMask = PhysicsCategory.Sqirrel
+        bomb.physicsBody?.collisionBitMask = PhysicsCategory.None
 
         addChild(bomb)
         
@@ -39,6 +51,7 @@ class GameScene: SKScene {
         let groupBomb = SKAction.group([moveBomb, rotateBomb])
         bomb.run(SKAction.repeatForever(groupBomb))
     }
+    
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
     }
