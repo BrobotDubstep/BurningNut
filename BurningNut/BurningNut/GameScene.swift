@@ -11,15 +11,17 @@ import GameplayKit
 
 class GameScene: SKScene {
     
-    let leftSquirrel = SKSpriteNode(imageNamed: "//leftSquirrel")
-    let rightSquirrel = SKSpriteNode(imageNamed: "//rightSquirrel")
-    let leftTree = SKSpriteNode(imageNamed: "//leftTree")
-    let middleTree = SKSpriteNode(imageNamed: "//middleTree")
-    let rightTree = SKSpriteNode(imageNamed: "//rightTree")
+    let leftSquirrel = SKSpriteNode(imageNamed: "minisquirrelRight")
+    let rightSquirrel = SKSpriteNode(imageNamed: "minisquirrel")
+    let middleTree = SKSpriteNode(imageNamed: "tree-2")
+    let leftTree = SKSpriteNode(imageNamed: "tree-1")
+    let rightTree = SKSpriteNode(imageNamed: "tree-1")
 
     override func didMove(to view: SKView) {
         
+        self.setupMatchfield()
         self.addBomb()
+        
        
     }
     
@@ -39,5 +41,44 @@ class GameScene: SKScene {
     }
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+    }
+    
+    func setupMatchfield() {
+        
+        leftSquirrel.position = CGPoint(x: -307.839, y: -89.305)
+        leftSquirrel.size = CGSize(width: 51.321, height: 59.464)
+        leftSquirrel.anchorPoint.x = 0.5
+        leftSquirrel.anchorPoint.y = 0.5
+        leftSquirrel.zPosition = 1
+        addChild(leftSquirrel)
+        
+        rightSquirrel.position = CGPoint(x: 307.839, y: -89.305)
+        rightSquirrel.size = CGSize(width: 51.321, height: 59.464)
+        rightSquirrel.anchorPoint.x = 0.5
+        rightSquirrel.anchorPoint.y = 0.5
+        rightSquirrel.zPosition = 1
+        addChild(rightSquirrel)
+        
+        middleTree.position = CGPoint(x: 0, y: -4.238)
+        middleTree.size = CGSize(width: 124.354, height: 221.849)
+        middleTree.anchorPoint.x = 0.5
+        middleTree.anchorPoint.y = 0.5
+        middleTree.zPosition = 1
+        addChild(middleTree)
+        
+        leftTree.position = CGPoint(x: -147.94, y: -62.205)
+        leftTree.size = CGSize(width: 119.261, height: 173.357)
+        leftTree.anchorPoint.x = 0.5
+        leftTree.anchorPoint.y = 0.5
+        leftTree.zPosition = 1
+        addChild(leftTree)
+        
+        rightTree.position = CGPoint(x: 147.94, y: -62.205)
+        rightTree.size = CGSize(width: 119.261, height: 173.357)
+        rightTree.anchorPoint.x = 0.5
+        rightTree.anchorPoint.y = 0.5
+        rightTree.zPosition = 1
+        addChild(rightTree)
+        
     }
 }
