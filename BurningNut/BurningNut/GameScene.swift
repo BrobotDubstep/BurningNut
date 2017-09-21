@@ -23,11 +23,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let middleTree = SKSpriteNode(imageNamed: "tree-2")
     let leftTree = SKSpriteNode(imageNamed: "tree-1")
     let rightTree = SKSpriteNode(imageNamed: "tree-1")
+    let explosionSound = SKAction.playSoundFileNamed("explosion.mp3", waitForCompletion: true)
 
     override func didMove(to view: SKView) {
         
         self.setupMatchfield()
-        //self.addBomb()
         
         self.physicsWorld.gravity = CGVector.init(dx: 0.0, dy: 0)
         physicsWorld.contactDelegate = self
@@ -49,19 +49,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             (secondBody.categoryBitMask & PhysicsCategory.Bomb != 0)) {
             if let monster = firstBody.node as? SKSpriteNode, let
                 projectile = secondBody.node as? SKSpriteNode {
-                projectileDidCollideWithMonster(bomb: projectile, squirrel: monster)
+                bombExplode(bomb: projectile, squirrel: monster)
             }
         }
     }
     
-    func projectileDidCollideWithMonster(bomb: SKSpriteNode, squirrel: SKSpriteNode) {
+    func bombExplode(bomb: SKSpriteNode, squirrel: SKSpriteNode) {
         
         let explosion = SKSpriteNode(imageNamed: "explosion")
         explosion.position = bomb.position
-        explosion.size = CGSize(width: 40, height: 40)
+        explosion.size = CGSize(width: 60, height: 60)
         explosion.zPosition = 1
         addChild(explosion)
-        run(SKAction.playSoundFileNamed("explosion.mp3", waitForCompletion: true))
+        run(explosionSound)
+        
+        explosion.run(
+            SKAction.sequence([
+                SKAction.wait(forDuration: 1.0),
+                SKAction.removeFromParent()
+                ])
+        )
         bomb.removeFromParent()
         squirrel.removeFromParent()
     }
@@ -86,6 +93,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let groupBomb = SKAction.group([moveBomb, rotateBomb])
         bomb.run(SKAction.repeatForever(groupBomb))
     }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        guard let touch = touches.first else {
+            return
+        }
+        let touchLocation = touch.location(in: self)
+        
+        addBomb(player: leftSquirrel, position: touchLocation)
+            }
     
     func setupMatchfield() {
         
