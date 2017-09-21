@@ -10,6 +10,12 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
+    
+    let leftSquirrel = SKSpriteNode(imageNamed: "//leftSquirrel")
+    let rightSquirrel = SKSpriteNode(imageNamed: "//rightSquirrel")
+    let leftTree = SKSpriteNode(imageNamed: "//leftTree")
+    let middleTree = SKSpriteNode(imageNamed: "//middleTree")
+    let rightTree = SKSpriteNode(imageNamed: "//rightTree")
 
     override func didMove(to view: SKView) {
         
