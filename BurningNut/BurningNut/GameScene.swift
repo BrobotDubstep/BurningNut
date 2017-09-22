@@ -12,9 +12,10 @@ import GameplayKit
 struct PhysicsCategory {
     static let None      : UInt32 = 0
     static let All       : UInt32 = UInt32.max
-    static let RightSquirrel: UInt32 = 0b1
+    static let RightSquirrel: UInt32 = 0b100
     static let LeftSquirrel: UInt32 = 0b11
-    static let Bomb: UInt32 = 0b10
+    static let LeftBomb: UInt32 = 0b1
+    static let RightBomb: UInt32 = 0b10
 
 }
 
@@ -39,17 +40,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func didBegin(_ contact: SKPhysicsContact) {
         
-        
-        var currentVictim: UInt32
-        
-        if(player1Turn) {
-            currentVictim = PhysicsCategory.RightSquirrel
-            player1Turn = false
-        } else {
-            currentVictim = PhysicsCategory.LeftSquirrel
-            player1Turn = true
-        }
-        
         var firstBody: SKPhysicsBody
         var secondBody: SKPhysicsBody
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
@@ -60,8 +50,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             secondBody = contact.bodyA
         }
 
-        if ((firstBody.categoryBitMask & currentVictim != 0) &&
-            (secondBody.categoryBitMask & PhysicsCategory.Bomb != 0)) {
+        if ((firstBody.categoryBitMask & PhysicsCategory.LeftSquirrel != 0) &&
+            (secondBody.categoryBitMask & PhysicsCategory.RightBomb != 0)) {
+            if let monster = firstBody.node as? SKSpriteNode, let
+                projectile = secondBody.node as? SKSpriteNode {
+                bombExplode(bomb: projectile, squirrel: monster)
+            }
+        } else if((firstBody.categoryBitMask & PhysicsCategory.RightSquirrel != 0) &&
+            (secondBody.categoryBitMask & PhysicsCategory.LeftBomb != 0)) {
             if let monster = firstBody.node as? SKSpriteNode, let
                 projectile = secondBody.node as? SKSpriteNode {
                 bombExplode(bomb: projectile, squirrel: monster)
@@ -71,11 +67,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func didEnd(_ contact: SKPhysicsContact) {
         
-        if(player1Turn) {
-            player1Turn = false
-        } else {
-            player1Turn = true
-        }
+
         
     }
     
@@ -108,14 +100,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func addBomb(player: SKSpriteNode, position: CGPoint) {
         
         var physicsCategory: UInt32
+        var bombCategory: UInt32
         var opponent: SKSpriteNode
         
         if(player == leftSquirrel) {
             physicsCategory = PhysicsCategory.RightSquirrel
+            bombCategory = PhysicsCategory.LeftBomb
             opponent = rightSquirrel
         } else {
             physicsCategory = PhysicsCategory.LeftSquirrel
             opponent = leftSquirrel
+            bombCategory = PhysicsCategory.RightBomb
         }
         
         let bomb = SKSpriteNode(imageNamed: "bomb")
@@ -125,7 +120,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         bomb.physicsBody = SKPhysicsBody(rectangleOf: bomb.size)
         opponent.physicsBody?.isDynamic = false
-        bomb.physicsBody?.categoryBitMask = PhysicsCategory.Bomb
+        bomb.physicsBody?.categoryBitMask = bombCategory
         bomb.physicsBody?.contactTestBitMask = physicsCategory
         bomb.physicsBody?.collisionBitMask = PhysicsCategory.None
 
@@ -158,11 +153,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         addBomb(player: currentPlayer, position: touchLocation)
         
-       /* if(player1Turn) {
+        if(player1Turn) {
             player1Turn = false
         } else {
             player1Turn = true
-        } */
+        }
         
         
         }
@@ -177,7 +172,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         leftSquirrel.physicsBody = SKPhysicsBody(rectangleOf: leftSquirrel.size)
         leftSquirrel.physicsBody?.isDynamic = false
         leftSquirrel.physicsBody?.categoryBitMask = PhysicsCategory.LeftSquirrel
-        leftSquirrel.physicsBody?.contactTestBitMask = PhysicsCategory.Bomb
+        leftSquirrel.physicsBody?.contactTestBitMask = PhysicsCategory.RightBomb
         leftSquirrel.physicsBody?.collisionBitMask = PhysicsCategory.None
         leftSquirrel.physicsBody?.usesPreciseCollisionDetection = true
         addChild(leftSquirrel)
@@ -190,7 +185,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         rightSquirrel.physicsBody = SKPhysicsBody(rectangleOf: rightSquirrel.size)
         rightSquirrel.physicsBody?.isDynamic = false
         rightSquirrel.physicsBody?.categoryBitMask = PhysicsCategory.RightSquirrel
-        rightSquirrel.physicsBody?.contactTestBitMask = PhysicsCategory.Bomb
+        rightSquirrel.physicsBody?.contactTestBitMask = PhysicsCategory.LeftBomb
         rightSquirrel.physicsBody?.collisionBitMask = PhysicsCategory.None
         rightSquirrel.physicsBody?.usesPreciseCollisionDetection = true
         addChild(rightSquirrel)
