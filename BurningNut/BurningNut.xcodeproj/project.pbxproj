@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5132868F1F74E4E8004C6A8B /* explosion.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5132868E1F74E3E9004C6A8B /* explosion.mp3 */; };
 		716410B11F73A21400E106B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716410B01F73A21400E106B4 /* AppDelegate.swift */; };
 		716410B31F73A21400E106B4 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 716410B21F73A21400E106B4 /* GameScene.sks */; };
 		716410B51F73A21400E106B4 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 716410B41F73A21400E106B4 /* Actions.sks */; };
@@ -142,6 +143,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5132868F1F74E4E8004C6A8B /* explosion.mp3 in Resources */,
 				716410BC1F73A21400E106B4 /* Main.storyboard in Resources */,
 				716410B31F73A21400E106B4 /* GameScene.sks in Resources */,
 				716410BE1F73A21400E106B4 /* Assets.xcassets in Resources */,
