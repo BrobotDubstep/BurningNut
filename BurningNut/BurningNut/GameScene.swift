@@ -27,6 +27,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let rightTree = SKSpriteNode(imageNamed: "tree-1")
     let explosionSound = SKAction.playSoundFileNamed("explosion.mp3", waitForCompletion: true)
     var player1Turn = true
+   
 
     override func didMove(to view: SKView) {
         
@@ -43,8 +44,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if(player1Turn) {
             currentVictim = PhysicsCategory.RightSquirrel
+            player1Turn = false
         } else {
             currentVictim = PhysicsCategory.LeftSquirrel
+            player1Turn = true
         }
         
         var firstBody: SKPhysicsBody
@@ -64,6 +67,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 bombExplode(bomb: projectile, squirrel: monster)
             }
         }
+    }
+    
+    func didEnd(_ contact: SKPhysicsContact) {
+        
+        if(player1Turn) {
+            player1Turn = false
+        } else {
+            player1Turn = true
+        }
+        
+    }
+    
+    func playerTurn(player: SKSpriteNode, position: CGPoint) {
+        
+        addBomb(player: player, position: position)
+        
+    
     }
     
     func bombExplode(bomb: SKSpriteNode, squirrel: SKSpriteNode) {
@@ -99,7 +119,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         let bomb = SKSpriteNode(imageNamed: "bomb")
-        bomb.position = CGPoint(x: player.position.x + 1, y: player.position.y)
+        bomb.position = CGPoint(x: player.position.x, y: player.position.y)
         bomb.size = CGSize(width: 15, height: 30)
         bomb.zPosition = 1
         
@@ -115,9 +135,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let rotateBomb = SKAction.rotate(byAngle: -20, duration: 4)
         let groupBomb = SKAction.group([moveBomb, rotateBomb])
         bomb.run(SKAction.repeatForever(groupBomb))
+        
+        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+      
         
         var currentPlayer: SKSpriteNode
         guard let touch = touches.first else {
@@ -131,8 +154,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             currentPlayer = rightSquirrel
         }
         
+        //playerTurn(player: currentPlayer, position: touchLocation)
+        
         addBomb(player: currentPlayer, position: touchLocation)
-            }
+        
+       /* if(player1Turn) {
+            player1Turn = false
+        } else {
+            player1Turn = true
+        } */
+        
+        
+        }
     
     func setupMatchfield() {
         
