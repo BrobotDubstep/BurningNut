@@ -17,6 +17,8 @@
 		716410BC1F73A21400E106B4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 716410BA1F73A21400E106B4 /* Main.storyboard */; };
 		716410BE1F73A21400E106B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 716410BD1F73A21400E106B4 /* Assets.xcassets */; };
 		716410C11F73A21400E106B4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 716410BF1F73A21400E106B4 /* LaunchScreen.storyboard */; };
+		71B3FDC91F790158006A5822 /* ConnectionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B3FDC81F790158006A5822 /* ConnectionsVC.swift */; };
+		71B3FDCD1F790546006A5822 /* PlayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B3FDCC1F790546006A5822 /* PlayerCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		716410BD1F73A21400E106B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		716410C01F73A21400E106B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		716410C21F73A21400E106B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		71B3FDC81F790158006A5822 /* ConnectionsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionsVC.swift; sourceTree = "<group>"; };
+		71B3FDCC1F790546006A5822 /* PlayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				716410B81F73A21400E106B4 /* GameViewController.swift */,
+				71B3FDC81F790158006A5822 /* ConnectionsVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -88,6 +93,7 @@
 		716410AF1F73A21400E106B4 /* BurningNut */ = {
 			isa = PBXGroup;
 			children = (
+				71B3FDC71F79002D006A5822 /* View */,
 				513286931F74F188004C6A8B /* Model */,
 				513286901F74EB5C004C6A8B /* Controller */,
 				5132868D1F74E3DA004C6A8B /* sounds */,
@@ -101,6 +107,14 @@
 				716410C21F73A21400E106B4 /* Info.plist */,
 			);
 			path = BurningNut;
+			sourceTree = "<group>";
+		};
+		71B3FDC71F79002D006A5822 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				71B3FDCC1F790546006A5822 /* PlayerCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -178,9 +192,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71B3FDCD1F790546006A5822 /* PlayerCell.swift in Sources */,
 				716410B71F73A21400E106B4 /* GameScene.swift in Sources */,
 				513286921F74EF45004C6A8B /* MultiplayerServiceManager.swift in Sources */,
 				716410B91F73A21400E106B4 /* GameViewController.swift in Sources */,
+				71B3FDC91F790158006A5822 /* ConnectionsVC.swift in Sources */,
 				716410B11F73A21400E106B4 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
