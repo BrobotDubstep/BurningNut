@@ -28,6 +28,43 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let rightTree = SKSpriteNode(imageNamed: "tree-1")
     let explosionSound = SKAction.playSoundFileNamed("explosion.mp3", waitForCompletion: true)
     var player1Turn = true
+    
+    let scheitel = CGPoint(x: 50, y: 180)
+    let scheitel_low = CGPoint(x: -100, y: -50)
+    
+    var lower_limit: CGFloat = 120, upper_bound: CGFloat = 140
+    
+    func parabel(t: CGFloat, x: CGFloat, y: CGFloat, x_in: CGFloat, y_in: CGFloat) -> CGFloat {
+        let a = (y - y_in) / (pow(x,2) - pow(x_in,2))
+        let c = y_in - (y - y_in) / (pow(x,2) - pow(x_in,2)) * pow(x_in,2)
+        return a * pow(t,2) + c
+    }
+    
+    func parabel_scheitel(t: CGFloat, x: CGFloat, y: CGFloat, x_s: CGFloat, y_s: CGFloat) -> CGFloat {
+        let a = (y - y_s) / pow(x - x_s,2)
+        return a * pow(t - x_s,2) + y_s
+    }
+    
+    
+    func flugkurve(t: CGFloat, x: CGFloat, y: CGFloat, x_in: CGFloat, y_in: CGFloat, player: CGFloat) -> CGFloat {
+        
+        let scheitel_y = parabel(t: 0, x: x, y: y, x_in: x_in, y_in: y_in)
+        
+        if scheitel_y < lower_limit {
+            if(x_in < 50 && x_in > -50){
+                return parabel_scheitel(t: t, x: x,y: y, x_s: scheitel_low.x * player, y_s: scheitel_low.y)
+            }
+            else{
+                return parabel_scheitel(t: t, x: x,y: y,x_s: x_in,y_s: y_in)
+            }
+        }
+        else if scheitel_y > upper_bound {
+            return parabel_scheitel(t: t, x: x, y: y, x_s: scheitel.x, y_s: scheitel.y)
+        }
+        else{
+            return parabel(t: t, x: x, y: y, x_in: x_in, y_in: y_in)
+        }
+    }
    
 
     override func didMove(to view: SKView) {
@@ -48,9 +85,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         if let bodyOne = contact.bodyA.node as? SKSpriteNode, let bodyTwo = contact.bodyB.node as? SKSpriteNode {
-                bombExplode(bodyOne: bodyOne, bodyTwo: bodyTwo)
+            bombExplode(bodyOne: bodyOne, bodyTwo: bodyTwo)
+            if contact.bodyA.node == leftSquirrel || contact.bodyB.node == leftSquirrel || contact.bodyA.node == rightSquirrel || contact.bodyB.node == rightSquirrel  {
+                //gameOver()
+            }
         }
 
+    }
+    
+    func gameOver(){
+        let loseAction = SKAction.run() {
+            let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+            let gameOverScene = GameOverScene(size: self.size, won: false)
+            self.view?.presentScene(gameOverScene, transition: reveal)
+        }
+        run(loseAction)
     }
     
     func bombExplode(bodyOne: SKSpriteNode, bodyTwo: SKSpriteNode) {
@@ -76,13 +125,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         var physicsCategory: UInt32
         var bombCategory: UInt32
+        var loopFrom, loopTo: CGFloat
+        var loopStep: CGFloat
         
         if(player == leftSquirrel) {
             physicsCategory = PhysicsCategory.RightSquirrel
             bombCategory = PhysicsCategory.LeftBomb
+            loopFrom = leftSquirrel.position.x
+            loopTo = rightSquirrel.position.x
+            loopStep = 1
         } else {
             physicsCategory = PhysicsCategory.LeftSquirrel
             bombCategory = PhysicsCategory.RightBomb
+            loopFrom = rightSquirrel.position.x
+            loopTo = leftSquirrel.position.x
+            loopStep = -1
         }
         
         let bomb = SKSpriteNode(imageNamed: "bomb")
@@ -97,10 +154,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         addChild(bomb)
         
-        let moveBomb = SKAction.move(to: CGPoint(x: position.x, y: position.y), duration: 4)
-        let rotateBomb = SKAction.rotate(byAngle: -20, duration: 4)
+        //let moveBomb = SKAction.move(to: CGPoint(x: position.x, y: position.y), duration: 4)
+        
+        let bezierPath = UIBezierPath()
+        bezierPath.move(to: player.position)
+        
+        for i in stride(from: loopFrom, to: loopTo, by: loopStep) {
+            let nextPoint = flugkurve(t: CGFloat(i), x: player.position.x, y: player.position.y, x_in: position.x, y_in: position.y, player: loopStep)
+            bezierPath.addLine(to: CGPoint(x: CGFloat(i), y: nextPoint))
+        }
+        
+        //bezierPath.close()
+        
+        
+        let moveBomb = SKAction.follow(bezierPath.cgPath, asOffset: false, orientToPath: false, duration: 6)
+        let rotateBomb = SKAction.rotate(byAngle: -20, duration: 6)
+        let removeBomb = SKAction.removeFromParent()
         let groupBomb = SKAction.group([moveBomb, rotateBomb])
-        bomb.run(SKAction.repeatForever(groupBomb))
+        //bomb.run(SKAction.repeatForever(groupBomb))
+        bomb.run(SKAction.sequence([groupBomb, removeBomb]))
         
         
     }

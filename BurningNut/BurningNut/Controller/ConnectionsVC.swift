@@ -17,6 +17,7 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        playerService.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
     }
