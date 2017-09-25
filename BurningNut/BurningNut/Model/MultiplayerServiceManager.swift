@@ -9,11 +9,18 @@
 import UIKit
 import MultipeerConnectivity
 
+protocol MultiplayerServiceManagerDelegate {
+    
+    func connectedDevicesChanged(manager : MultiplayerServiceManager, connectedDevices: [String])
+    func bombAttack(manager : MultiplayerServiceManager, colorString: String)
+    
+}
+
 class MultiplayerServiceManager: NSObject {
     
     // Service type must be a unique string, at most 15 characters long
     // and can contain only ASCII lowercase letters, numbers and hyphens.
-    private let ColorServiceType = "nut-multiplayer"
+    private let gameType = "nut-multiplayer"
     
     private let myPeerId = MCPeerID(displayName: UIDevice.current.name)
     
@@ -23,8 +30,8 @@ class MultiplayerServiceManager: NSObject {
     var delegate : MultiplayerServiceManagerDelegate?
     
     override init() {
-        self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerId, discoveryInfo: nil, serviceType: ColorServiceType)
-        self.serviceBrowser = MCNearbyServiceBrowser(peer: myPeerId, serviceType: ColorServiceType)
+        self.serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerId, discoveryInfo: nil, serviceType: gameType)
+        self.serviceBrowser = MCNearbyServiceBrowser(peer: myPeerId, serviceType: gameType)
         
         super.init()
         
@@ -40,13 +47,13 @@ class MultiplayerServiceManager: NSObject {
         self.serviceBrowser.stopBrowsingForPeers()
     }
     
-    lazy var session : MCSession = {
+   lazy var session : MCSession = {
         let session = MCSession(peer: self.myPeerId, securityIdentity: nil, encryptionPreference: .required)
         session.delegate = self
         return session
     }()
     
-    func send(colorName : String) {
+   /* func send(colorName : String) {
         NSLog("%@", "sendColor: \(colorName) to \(session.connectedPeers.count) peers")
         
         if session.connectedPeers.count > 0 {
@@ -57,7 +64,7 @@ class MultiplayerServiceManager: NSObject {
                 NSLog("%@", "Error for sending: \(error)")
             }
         }
-    }
+    } */
 }
 
 extension MultiplayerServiceManager : MCNearbyServiceAdvertiserDelegate {

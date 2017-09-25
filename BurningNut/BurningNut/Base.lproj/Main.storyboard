@@ -61,7 +61,7 @@
                                             <color key="titleColor" red="0.99548257529999995" green="0.96118383730000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <segue destination="BV1-FR-VrT" kind="show" id="ZzX-zH-yIm"/>
+                                            <segue destination="BV1-FR-VrT" kind="show" id="VD5-R4-4e8"/>
                                         </connections>
                                     </button>
                                 </subviews>
