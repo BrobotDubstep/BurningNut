@@ -13,8 +13,10 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     @IBOutlet weak var tableView: UITableView!
     
     let playerService = MultiplayerServiceManager()
-    var connectedPlayers: [String]!
- 
+    var connectedPlayers = [String]()
+    
+    @IBOutlet weak var test: UINavigationItem!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +32,7 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "PlayerCell", for: indexPath) as? PlayerCell {
             let player = connectedPlayers[indexPath.row]
-            cell.updateUI(player: player + "1")
+            cell.updateUI(player: player)
             
             return cell
        
@@ -41,13 +43,7 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       /* if(connectedPlayers != nil) {
          return connectedPlayers.count
-        } else {
-            self.connectedPlayers.append("Keine Spieler gefunden")
-         return connectedPlayers.count
-        } */
-        return 0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -60,8 +56,10 @@ extension ConnectionsVC : MultiplayerServiceManagerDelegate {
     
     func connectedDevicesChanged(manager: MultiplayerServiceManager, connectedDevices: [String]) {
         OperationQueue.main.addOperation {
-            self.navigationController?.title = connectedDevices[0]
-            //self.connectedPlayers = connectedDevices
+            if(connectedDevices.count != 0) {
+            self.connectedPlayers = connectedDevices
+            self.tableView.reloadData()
+            }
        
     
         }
