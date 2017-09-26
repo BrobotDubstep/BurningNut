@@ -77,8 +77,6 @@ extension ConnectionsVC : MultiplayerServiceManagerDelegate {
                 }
                     self.tableView.reloadData()
                 }
-       
-    
         }
     }
     

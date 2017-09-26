@@ -21,6 +21,10 @@ struct PhysicsCategory {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    var rightPointCntr = 0
+    var leftPointCntr = 0
+    var rightPointLbl = SKLabelNode()
+    var leftPointLbl = SKLabelNode()
     let leftSquirrel = SKSpriteNode(imageNamed: "minisquirrelRight")
     let rightSquirrel = SKSpriteNode(imageNamed: "minisquirrel")
     let middleTree = SKSpriteNode(imageNamed: "tree-2")
@@ -71,6 +75,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.setupMatchfield()
         
+        self.leftPointLbl = (self.childNode(withName: "//leftPointLbl") as? SKLabelNode)!
+        self.rightPointLbl = (self.childNode(withName: "//rightPointLbl") as? SKLabelNode)!
+        
         self.physicsWorld.gravity = CGVector.init(dx: 0.0, dy: 0)
         physicsWorld.contactDelegate = self
     }
@@ -87,10 +94,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let bodyOne = contact.bodyA.node as? SKSpriteNode, let bodyTwo = contact.bodyB.node as? SKSpriteNode {
             bombExplode(bodyOne: bodyOne, bodyTwo: bodyTwo)
             if contact.bodyA.node == leftSquirrel || contact.bodyB.node == leftSquirrel || contact.bodyA.node == rightSquirrel || contact.bodyB.node == rightSquirrel  {
-                gameOver()
-            }
+                if(contact.bodyA.node == leftSquirrel || contact.bodyB.node == leftSquirrel) {
+                    rightPointCntr += 1
+                    rightPointLbl.text = String(rightPointCntr)
+                    setupMatchfield()
+                } else if(contact.bodyA.node == rightSquirrel || contact.bodyB.node == rightSquirrel) {
+                    leftPointCntr += 1
+                    leftPointLbl.text = String(leftPointCntr)
+                    setupMatchfield()
+                }
+                
+                if(leftPointCntr == 3 || rightPointCntr == 3) {
+                    gameOver()
+                }
         }
 
+        }
     }
     
     func gameOver(){
@@ -205,6 +224,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func setupMatchfield() {
         
+     
+
         leftSquirrel.position = CGPoint(x: -307.839, y: -89.305)
         leftSquirrel.size = CGSize(width: 51.321, height: 59.464)
         leftSquirrel.anchorPoint.x = 0.5

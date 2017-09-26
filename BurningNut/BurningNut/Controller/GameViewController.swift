@@ -22,11 +22,13 @@ class GameViewController: UIViewController {
         }
     }
     
-    override func viewDidLoad() {
-    
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
         
-        if(_playerCell == nil) {
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+      
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
             if let scene = SKScene(fileNamed: "GameScene") {
@@ -39,29 +41,14 @@ class GameViewController: UIViewController {
             view.ignoresSiblingOrder = true
             view.showsFPS = true
             view.showsNodeCount = true
-            
-            }
-            
-        } else {
-            if let view = self.view as! SKView? {
-                // Load the SKScene from 'GameScene.sks'
-                if let scene = SKScene(fileNamed: "GameScene") {
-                    // Set the scale mode to scale to fit the window
-                    scene.scaleMode = .aspectFill
-                    // Present the scene
-                    view.presentScene(scene)
-                }
-                
-             
-                let manager = _playerCell.delegate.getManager()
-            
-                view.ignoresSiblingOrder = true
-                view.showsFPS = true
-                view.showsNodeCount = true
+
             }
 
-            
+        if(_playerCell != nil) {
+            let manager = _playerCell.delegate.getManager()
+            manager.send(message: _playerCell.name)
         }
+        
     }
 
     override var shouldAutorotate: Bool {
@@ -84,4 +71,6 @@ class GameViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
+    
+    
 }
