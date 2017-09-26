@@ -13,7 +13,7 @@ protocol MultiplayerServiceManagerDelegate {
     
     func connectedDevicesChanged(manager : MultiplayerServiceManager, connectedDevices: [String])
     func bombAttack(manager : MultiplayerServiceManager, colorString: String)
-    func launchView() -> MultiplayerServiceManager
+    func getManager() -> MultiplayerServiceManager
     
 }
 

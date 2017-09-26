@@ -88,7 +88,7 @@ extension ConnectionsVC : MultiplayerServiceManagerDelegate {
         
     }
     
-    func launchView() -> MultiplayerServiceManager {
+    func getManager() -> MultiplayerServiceManager {
         return self.playerService
     }
     
