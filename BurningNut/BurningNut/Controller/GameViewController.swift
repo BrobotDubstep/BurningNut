@@ -66,8 +66,3 @@ class GameViewController: UIViewController {
         return true
     }
 }
-<<<<<<< HEAD
-=======
-    
-
->>>>>>> WorkingCopy
