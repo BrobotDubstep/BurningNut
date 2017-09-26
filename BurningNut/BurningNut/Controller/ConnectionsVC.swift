@@ -65,6 +65,9 @@ extension ConnectionsVC : MultiplayerServiceManagerDelegate {
     
     func connectedDevicesChanged(manager: MultiplayerServiceManager, connectedDevices: [String]) {
         OperationQueue.main.addOperation {
+            for i in 0..<self.connectedPlayers.count {
+                self.connectedPlayers.remove(at: i)
+            }
             if(connectedDevices.count != 0) {
             for i in 0..<connectedDevices.count {
                 self.connectedPlayers.append(Player.init(name: connectedDevices[i], delegate: manager.delegate!))
