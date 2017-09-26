@@ -154,6 +154,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="playerLbl" destination="dny-88-qla" id="ApO-et-oc2"/>
+                                            <segue destination="BV1-FR-VrT" kind="showDetail" id="ifG-Cn-Ist"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -187,21 +188,9 @@
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="3se-qz-xqx" customClass="SKView">
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cN1-ma-dfT">
-                                <rect key="frame" x="64" y="102" width="408" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.98398850863904797" green="1" blue="0.98547983412965257" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
                     </view>
-                    <connections>
-                        <outlet property="test" destination="cN1-ma-dfT" id="yNZ-ip-WsO"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
@@ -212,4 +201,7 @@
         <image name="bomb" width="360" height="720"/>
         <image name="wald" width="960" height="640"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="ifG-Cn-Ist"/>
+    </inferredMetricsTieBreakers>
 </document>

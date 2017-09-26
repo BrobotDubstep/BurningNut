@@ -12,32 +12,37 @@ import GameplayKit
 
 class GameViewController: UIViewController {
     
-    let multiplayerService = MultiplayerServiceManager()
-    @IBOutlet weak var test: UILabel!
-
+    private var _playerCell: Player!
+    
+    var playerCell: Player {
+        get {
+            return _playerCell
+        } set {
+            _playerCell = newValue
+        }
+    }
+    
     override func viewDidLoad() {
     
         super.viewDidLoad()
         
-        multiplayerService.delegate = self
-        
-//        if let view = self.view as! SKView? {
-//            // Load the SKScene from 'GameScene.sks'
-//            if let scene = SKScene(fileNamed: "GameScene") {
-//                // Set the scale mode to scale to fit the window
-//                scene.scaleMode = .aspectFill
-//
-//                // Present the scene
-//                view.presentScene(scene)
-//            }
-//
-//            view.ignoresSiblingOrder = true
-//
-//            view.showsFPS = true
-//            view.showsNodeCount = true
-//
-//
-//        }
+        if let view = self.view as! SKView? {
+            // Load the SKScene from 'GameScene.sks'
+            if let scene = SKScene(fileNamed: "GameScene") {
+                // Set the scale mode to scale to fit the window
+                scene.scaleMode = .aspectFill
+
+                // Present the scene
+                view.presentScene(scene)
+            }
+
+            view.ignoresSiblingOrder = true
+
+            view.showsFPS = true
+            view.showsNodeCount = true
+
+
+        }
     }
 
     override var shouldAutorotate: Bool {
@@ -61,16 +66,5 @@ class GameViewController: UIViewController {
         return true
     }
 }
+    
 
-extension GameViewController : MultiplayerServiceManagerDelegate {
-    func bombAttack(manager: MultiplayerServiceManager, colorString: String) {
-        
-    }
-    
-    func connectedDevicesChanged(manager: MultiplayerServiceManager, connectedDevices: [String]) {
-        OperationQueue.main.addOperation {
-            self.test.text = "Connections: \(connectedDevices)"
-        }
-    }
-    
-}

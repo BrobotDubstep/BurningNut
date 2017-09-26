@@ -8,12 +8,13 @@
 
 import UIKit
 
+
 class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     
     let playerService = MultiplayerServiceManager()
-    var connectedPlayers = [String]()
+    var connectedPlayers = [Player]()
     
     @IBOutlet weak var test: UINavigationItem!
     
@@ -25,8 +26,6 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         tableView.delegate = self
         tableView.dataSource = self
         
-        
-       
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -47,9 +46,19 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        let playerCell = connectedPlayers[indexPath.row]
+        performSegue(withIdentifier: "GameViewController", sender: playerCell)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if let destination = segue.destination as? GameViewController {
+            
+            if let player = sender as? Player {
+                destination.playerCell = player
+           }
+        }
+    }
 }
 
 extension ConnectionsVC : MultiplayerServiceManagerDelegate {
@@ -57,7 +66,9 @@ extension ConnectionsVC : MultiplayerServiceManagerDelegate {
     func connectedDevicesChanged(manager: MultiplayerServiceManager, connectedDevices: [String]) {
         OperationQueue.main.addOperation {
             if(connectedDevices.count != 0) {
-            self.connectedPlayers = connectedDevices
+            for i in 0..<connectedDevices.count {
+                self.connectedPlayers.append(Player.init(name: connectedDevices[i], delegate: manager.delegate!))
+            }
             self.tableView.reloadData()
             }
        
@@ -68,4 +79,5 @@ extension ConnectionsVC : MultiplayerServiceManagerDelegate {
     func bombAttack(manager: MultiplayerServiceManager, colorString: String) {
         
     }
-}
+  }
+
