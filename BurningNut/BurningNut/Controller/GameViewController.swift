@@ -52,7 +52,9 @@ class GameViewController: UIViewController {
                     view.presentScene(scene)
                 }
                 
-                _playerCell.delegate.launchView()
+             
+                let manager = _playerCell.delegate.getManager()
+            
                 view.ignoresSiblingOrder = true
                 view.showsFPS = true
                 view.showsNodeCount = true
