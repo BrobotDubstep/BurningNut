@@ -87,7 +87,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let bodyOne = contact.bodyA.node as? SKSpriteNode, let bodyTwo = contact.bodyB.node as? SKSpriteNode {
             bombExplode(bodyOne: bodyOne, bodyTwo: bodyTwo)
             if contact.bodyA.node == leftSquirrel || contact.bodyB.node == leftSquirrel || contact.bodyA.node == rightSquirrel || contact.bodyB.node == rightSquirrel  {
-                //gameOver()
+                gameOver()
             }
         }
 
@@ -167,8 +167,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //bezierPath.close()
         
         
-        let moveBomb = SKAction.follow(bezierPath.cgPath, asOffset: false, orientToPath: false, duration: 6)
-        let rotateBomb = SKAction.rotate(byAngle: -20, duration: 6)
+        let moveBomb = SKAction.follow(bezierPath.cgPath, asOffset: false, orientToPath: false, duration: 3)
+        let rotateBomb = SKAction.rotate(byAngle: -20, duration: 3)
         let removeBomb = SKAction.removeFromParent()
         let groupBomb = SKAction.group([moveBomb, rotateBomb])
         //bomb.run(SKAction.repeatForever(groupBomb))
