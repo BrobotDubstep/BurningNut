@@ -18,6 +18,7 @@
 		716410BC1F73A21400E106B4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 716410BA1F73A21400E106B4 /* Main.storyboard */; };
 		716410BE1F73A21400E106B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 716410BD1F73A21400E106B4 /* Assets.xcassets */; };
 		716410C11F73A21400E106B4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 716410BF1F73A21400E106B4 /* LaunchScreen.storyboard */; };
+		716DBAA81F7A37F1001B8622 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716DBAA71F7A37F1001B8622 /* Player.swift */; };
 		71B3FDC91F790158006A5822 /* ConnectionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B3FDC81F790158006A5822 /* ConnectionsVC.swift */; };
 		71B3FDCD1F790546006A5822 /* PlayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B3FDCC1F790546006A5822 /* PlayerCell.swift */; };
 /* End PBXBuildFile section */
@@ -36,6 +37,7 @@
 		716410BD1F73A21400E106B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		716410C01F73A21400E106B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		716410C21F73A21400E106B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		716DBAA71F7A37F1001B8622 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		71B3FDC81F790158006A5822 /* ConnectionsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionsVC.swift; sourceTree = "<group>"; };
 		71B3FDCC1F790546006A5822 /* PlayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				513286911F74EF45004C6A8B /* MultiplayerServiceManager.swift */,
+				716DBAA71F7A37F1001B8622 /* Player.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -199,6 +202,7 @@
 				716410B71F73A21400E106B4 /* GameScene.swift in Sources */,
 				51960BAE1F791D870059ED2D /* GameOverScene.swift in Sources */,
 				513286921F74EF45004C6A8B /* MultiplayerServiceManager.swift in Sources */,
+				716DBAA81F7A37F1001B8622 /* Player.swift in Sources */,
 				716410B91F73A21400E106B4 /* GameViewController.swift in Sources */,
 				71B3FDC91F790158006A5822 /* ConnectionsVC.swift in Sources */,
 				716410B11F73A21400E106B4 /* AppDelegate.swift in Sources */,
@@ -339,11 +343,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = E6JWV32CA8;
+				DEVELOPMENT_TEAM = 44478YL93K;
 				INFOPLIST_FILE = BurningNut/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = SoftwareSolutions.BurningNut;
+				PRODUCT_BUNDLE_IDENTIFIER = TurboSoftwareSolutions.BurningNut;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -355,11 +359,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = E6JWV32CA8;
+				DEVELOPMENT_TEAM = 44478YL93K;
 				INFOPLIST_FILE = BurningNut/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = SoftwareSolutions.BurningNut;
+				PRODUCT_BUNDLE_IDENTIFIER = TurboSoftwareSolutions.BurningNut;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

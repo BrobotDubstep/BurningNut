@@ -17,7 +17,7 @@ class PlayerCell: UITableViewCell {
         // Initialization code
     }
 
-    func updateUI(player: String) {
-      playerLbl.text = player
+    func updateUI(player: Player) {
+      playerLbl.text = player.name
     }
 }

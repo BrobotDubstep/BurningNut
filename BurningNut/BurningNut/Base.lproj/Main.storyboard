@@ -154,6 +154,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="playerLbl" destination="dny-88-qla" id="ApO-et-oc2"/>
+                                            <segue destination="BV1-FR-VrT" kind="showDetail" id="ifG-Cn-Ist"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -200,4 +201,7 @@
         <image name="bomb" width="360" height="720"/>
         <image name="wald" width="960" height="640"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="ifG-Cn-Ist"/>
+    </inferredMetricsTieBreakers>
 </document>

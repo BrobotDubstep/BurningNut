@@ -11,7 +11,17 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
-
+    
+    private var _playerCell: Player!
+    
+    var playerCell: Player {
+        get {
+            return _playerCell
+        } set {
+            _playerCell = newValue
+        }
+    }
+    
     override func viewDidLoad() {
     
         super.viewDidLoad()
@@ -56,3 +66,8 @@ class GameViewController: UIViewController {
         return true
     }
 }
+<<<<<<< HEAD
+=======
+    
+
+>>>>>>> WorkingCopy
