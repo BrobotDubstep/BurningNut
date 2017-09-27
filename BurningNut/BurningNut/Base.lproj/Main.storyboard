@@ -126,7 +126,7 @@
                                     <navigationItem title="Verbindungen" id="MeG-fs-zOE">
                                         <barButtonItem key="leftBarButtonItem" systemItem="stop" id="jm9-fI-nkg">
                                             <connections>
-                                                <action selector="backBtnPressed:" destination="buW-j7-op2" id="gU6-5p-a0E"/>
+                                                <action selector="dismissBtn:" destination="buW-j7-op2" id="MhF-5S-drc"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -174,7 +174,6 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="4Hp-eN-3zF" id="zqr-LU-D0o"/>
-                        <outlet property="test" destination="MeG-fs-zOE" id="5IY-ew-lIN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bOE-ZJ-R2h" userLabel="First Responder" sceneMemberID="firstResponder"/>

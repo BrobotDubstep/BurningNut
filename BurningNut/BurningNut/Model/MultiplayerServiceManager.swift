@@ -52,30 +52,6 @@ class MultiplayerServiceManager: NSObject, MCNearbyServiceAdvertiserDelegate, MC
         advertiser.delegate = self
     }
     
-//    deinit {
-//        self.serviceAdvertiser.stopAdvertisingPeer()
-//        self.serviceBrowser.stopBrowsingForPeers()
-//    }
-//
-//   lazy var session : MCSession = {
-//        let session = MCSession(peer: self.myPeerId, securityIdentity: nil, encryptionPreference: .required)
-//        session.delegate = self
-//        return session
-//    }()
-    
-//    func send(message : String) {
-//        NSLog("%@", "sendColor: \(message) to \(session.connectedPeers.count) peers")
-//
-//        if session.connectedPeers.count > 0 {
-//            do {
-//                try self.session.send(message.data(using: .utf8)!, toPeers: session.connectedPeers, with: .reliable)
-//            }
-//            catch let error {
-//                NSLog("%@", "Error for sending: \(error)")
-//            }
-//        }
-//    }
-    
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: Error) {
         NSLog("%@", "didNotStartAdvertisingPeer: \(error)")
     }
@@ -140,6 +116,21 @@ class MultiplayerServiceManager: NSObject, MCNearbyServiceAdvertiserDelegate, MC
     
     func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
         NSLog("%@", "didFinishReceivingResourceWithName")
+    }
+    
+    //own stuff
+    
+    func sendData(dictionaryWithData dictionary: Dictionary<String, String>, toPeer targetPeer: MCPeerID) -> Bool {
+        let dataToSend = NSKeyedArchiver.archivedData(withRootObject: dictionary)
+        let peersArray = NSArray(object: targetPeer)
+        var error: NSError?
+        
+//        if !session.sendData(dataToSend, toPeers: peersArray, withMode: MCSessionSendDataMode.Reliable, error: &error) {
+//            print(error?.localizedDescription)
+//            return false
+//        }
+        
+        return true
     }
 }
 
