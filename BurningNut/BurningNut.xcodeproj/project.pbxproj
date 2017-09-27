@@ -10,7 +10,8 @@
 		5132868F1F74E4E8004C6A8B /* explosion.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5132868E1F74E3E9004C6A8B /* explosion.mp3 */; };
 		513286921F74EF45004C6A8B /* MultiplayerServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513286911F74EF45004C6A8B /* MultiplayerServiceManager.swift */; };
 		51960BAE1F791D870059ED2D /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51960BAD1F791D870059ED2D /* GameOverScene.swift */; };
-		7157C2BF1F7B895000688F96 /* GameScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7157C2BE1F7B895000688F96 /* GameScore.swift */; };
+		7157C2BF1F7B895000688F96 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7157C2BE1F7B895000688F96 /* GameState.swift */; };
+		7157C2C31F7BB15000688F96 /* CalcFlugbahn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7157C2C21F7BB15000688F96 /* CalcFlugbahn.swift */; };
 		716410B11F73A21400E106B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716410B01F73A21400E106B4 /* AppDelegate.swift */; };
 		716410B31F73A21400E106B4 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 716410B21F73A21400E106B4 /* GameScene.sks */; };
 		716410B51F73A21400E106B4 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 716410B41F73A21400E106B4 /* Actions.sks */; };
@@ -28,7 +29,8 @@
 		5132868E1F74E3E9004C6A8B /* explosion.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = explosion.mp3; sourceTree = "<group>"; };
 		513286911F74EF45004C6A8B /* MultiplayerServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplayerServiceManager.swift; sourceTree = "<group>"; };
 		51960BAD1F791D870059ED2D /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
-		7157C2BE1F7B895000688F96 /* GameScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScore.swift; sourceTree = "<group>"; };
+		7157C2BE1F7B895000688F96 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
+		7157C2C21F7BB15000688F96 /* CalcFlugbahn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcFlugbahn.swift; sourceTree = "<group>"; };
 		716410AD1F73A21400E106B4 /* BurningNut.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BurningNut.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		716410B01F73A21400E106B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		716410B21F73A21400E106B4 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -77,7 +79,8 @@
 			children = (
 				513286911F74EF45004C6A8B /* MultiplayerServiceManager.swift */,
 				716DBAA71F7A37F1001B8622 /* Player.swift */,
-				7157C2BE1F7B895000688F96 /* GameScore.swift */,
+				7157C2BE1F7B895000688F96 /* GameState.swift */,
+				7157C2C21F7BB15000688F96 /* CalcFlugbahn.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -222,7 +225,8 @@
 				51960BAE1F791D870059ED2D /* GameOverScene.swift in Sources */,
 				513286921F74EF45004C6A8B /* MultiplayerServiceManager.swift in Sources */,
 				716DBAA81F7A37F1001B8622 /* Player.swift in Sources */,
-				7157C2BF1F7B895000688F96 /* GameScore.swift in Sources */,
+				7157C2C31F7BB15000688F96 /* CalcFlugbahn.swift in Sources */,
+				7157C2BF1F7B895000688F96 /* GameState.swift in Sources */,
 				716410B91F73A21400E106B4 /* GameViewController.swift in Sources */,
 				71B3FDC91F790158006A5822 /* ConnectionsVC.swift in Sources */,
 				716410B11F73A21400E106B4 /* AppDelegate.swift in Sources */,
@@ -363,11 +367,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = E6JWV32CA8;
+				DEVELOPMENT_TEAM = 44478YL93K;
 				INFOPLIST_FILE = BurningNut/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = SoftwareSolutions.BurningNut;
+				PRODUCT_BUNDLE_IDENTIFIER = TurboSoftwareSolutions.BurningNut;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -379,11 +383,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = E6JWV32CA8;
+				DEVELOPMENT_TEAM = 44478YL93K;
 				INFOPLIST_FILE = BurningNut/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = SoftwareSolutions.BurningNut;
+				PRODUCT_BUNDLE_IDENTIFIER = TurboSoftwareSolutions.BurningNut;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

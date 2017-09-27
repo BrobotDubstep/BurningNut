@@ -30,54 +30,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let rightTree = SKSpriteNode(imageNamed: "tree-1")
     let explosionSound = SKAction.playSoundFileNamed("explosion.mp3", waitForCompletion: true)
     var player1Turn = true
-    
-    let scheitel = CGPoint(x: 50, y: 180)
-    let scheitel_low = CGPoint(x: -100, y: -50)
-    
-    var lower_limit: CGFloat = 120, upper_bound: CGFloat = 140
-    
-    func parabel(t: CGFloat, x: CGFloat, y: CGFloat, x_in: CGFloat, y_in: CGFloat) -> CGFloat {
-        let a = (y - y_in) / (pow(x,2) - pow(x_in,2))
-        let c = y_in - (y - y_in) / (pow(x,2) - pow(x_in,2)) * pow(x_in,2)
-        return a * pow(t,2) + c
-    }
-    
-    func parabel_scheitel(t: CGFloat, x: CGFloat, y: CGFloat, x_s: CGFloat, y_s: CGFloat) -> CGFloat {
-        let a = (y - y_s) / pow(x - x_s,2)
-        return a * pow(t - x_s,2) + y_s
-    }
+    var flugbahnCalc = CalcFlugbahn()
     
     
-    func flugkurve(t: CGFloat, x: CGFloat, y: CGFloat, x_in: CGFloat, y_in: CGFloat, player: CGFloat) -> CGFloat {
-        
-        let scheitel_y = parabel(t: 0, x: x, y: y, x_in: x_in, y_in: y_in)
-        
-        if scheitel_y < lower_limit {
-            if(x_in < 50 && x_in > -50){
-                return parabel_scheitel(t: t, x: x,y: y, x_s: scheitel_low.x * player, y_s: scheitel_low.y)
-            }
-            else{
-                return parabel_scheitel(t: t, x: x,y: y,x_s: x_in,y_s: y_in)
-            }
-        }
-        else if scheitel_y > upper_bound {
-            return parabel_scheitel(t: t, x: x, y: y, x_s: scheitel.x, y_s: scheitel.y)
-        }
-        else{
-            return parabel(t: t, x: x, y: y, x_in: x_in, y_in: y_in)
-        }
-    }
    
 
     override func didMove(to view: SKView) {
         
         self.setupMatchfield()
         
-        leftPointLbl.text = String(GameScore.shared.leftScore)
-        rightPointLbl.text = String(GameScore.shared.rightScore)
+        leftPointLbl.text = String(GameState.shared.leftScore)
+        rightPointLbl.text = String(GameState.shared.rightScore)
         
         self.physicsWorld.gravity = CGVector.init(dx: 0.0, dy: 0)
         physicsWorld.contactDelegate = self
+        
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -93,20 +60,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             bombExplode(bodyOne: bodyOne, bodyTwo: bodyTwo)
             if contact.bodyA.node == leftSquirrel || contact.bodyB.node == leftSquirrel || contact.bodyA.node == rightSquirrel || contact.bodyB.node == rightSquirrel  {
                 if(contact.bodyA.node == leftSquirrel || contact.bodyB.node == leftSquirrel) {
-                    GameScore.shared.rightScore += 1
-                    rightPointLbl.text = String(GameScore.shared.rightScore)
+                    GameState.shared.rightScore += 1
+                    rightPointLbl.text = String(GameState.shared.rightScore)
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                         self.resetGameScene()
                     })
                
                 } else if(contact.bodyA.node == rightSquirrel || contact.bodyB.node == rightSquirrel) {
-                    GameScore.shared.leftScore += 1
-                    leftPointLbl.text = String(GameScore.shared.leftScore)
+                    GameState.shared.leftScore += 1
+                    leftPointLbl.text = String(GameState.shared.leftScore)
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                         self.resetGameScene()
                     })
                 }
-                if( GameScore.shared.leftScore == 3 || GameScore.shared.rightScore == 3) {
+                if( GameState.shared.leftScore == 3 || GameState.shared.rightScore == 3) {
                     gameOver()
                     
                 }
@@ -182,7 +149,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bezierPath.move(to: player.position)
         
         for i in stride(from: loopFrom, to: loopTo, by: loopStep) {
-            let nextPoint = flugkurve(t: CGFloat(i), x: player.position.x, y: player.position.y, x_in: position.x, y_in: position.y, player: loopStep)
+            let nextPoint = flugbahnCalc.flugkurve(t: CGFloat(i), x: player.position.x, y: player.position.y, x_in: position.x, y_in: position.y, player: loopStep)
             bezierPath.addLine(to: CGPoint(x: CGFloat(i), y: nextPoint))
         }
         
@@ -291,8 +258,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             
             view.ignoresSiblingOrder = true
-            view.showsFPS = true
-            view.showsNodeCount = true
+//            view.showsFPS = true
+//            view.showsNodeCount = true
             
             
         }

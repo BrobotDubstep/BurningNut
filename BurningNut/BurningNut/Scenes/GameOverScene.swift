@@ -29,8 +29,8 @@ class GameOverScene: SKScene {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        GameScore.shared.leftScore = 0
-        GameScore.shared.rightScore = 0
+        GameState.shared.leftScore = 0
+        GameState.shared.rightScore = 0
         
         if let view = self.view as SKView? {
             if let scene = SKScene(fileNamed: "GameScene") {

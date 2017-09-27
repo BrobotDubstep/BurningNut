@@ -8,10 +8,12 @@
 
 import Foundation
 
-class GameScore {
-    static let shared = GameScore()
+class GameState {
+    static let shared = GameState()
     var leftScore = 0
     var rightScore = 0
+    var player1 = ""
+    var player2 = ""
     
     private init() { }
 }
