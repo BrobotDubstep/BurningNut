@@ -33,51 +33,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let rightTree = SKSpriteNode(imageNamed: "tree-1")
     let explosionSound = SKAction.playSoundFileNamed("explosion.mp3", waitForCompletion: true)
     var player1Turn = true
-    
-    let scheitel = CGPoint(x: 50, y: 180)
-    let scheitel_low = CGPoint(x: -100, y: -50)
-    
-    var lower_limit: CGFloat = 120, upper_bound: CGFloat = 140
-    
-    func parabel(t: CGFloat, x: CGFloat, y: CGFloat, x_in: CGFloat, y_in: CGFloat) -> CGFloat {
-        let a = (y - y_in) / (pow(x,2) - pow(x_in,2))
-        let c = y_in - (y - y_in) / (pow(x,2) - pow(x_in,2)) * pow(x_in,2)
-        return a * pow(t,2) + c
-    }
-    
-    func parabel_scheitel(t: CGFloat, x: CGFloat, y: CGFloat, x_s: CGFloat, y_s: CGFloat) -> CGFloat {
-        let a = (y - y_s) / pow(x - x_s,2)
-        return a * pow(t - x_s,2) + y_s
-    }
+    var flugbahnCalc = CalcFlugbahn()
     
     
-    func flugkurve(t: CGFloat, x: CGFloat, y: CGFloat, x_in: CGFloat, y_in: CGFloat, player: CGFloat) -> CGFloat {
-        
-        let scheitel_y = parabel(t: 0, x: x, y: y, x_in: x_in, y_in: y_in)
-        
-        if scheitel_y < lower_limit {
-            if(x_in < 50 && x_in > -50){
-                return parabel_scheitel(t: t, x: x,y: y, x_s: scheitel_low.x * player, y_s: scheitel_low.y)
-            }
-            else{
-                return parabel_scheitel(t: t, x: x,y: y,x_s: x_in,y_s: y_in)
-            }
-        }
-        else if scheitel_y > upper_bound {
-            return parabel_scheitel(t: t, x: x, y: y, x_s: scheitel.x, y_s: scheitel.y)
-        }
-        else{
-            return parabel(t: t, x: x, y: y, x_in: x_in, y_in: y_in)
-        }
-    }
    
 
     override func didMove(to view: SKView) {
         
         self.setupMatchfield()
         
-        leftPointLbl.text = String(GameScore.shared.leftScore)
-        rightPointLbl.text = String(GameScore.shared.rightScore)
+        leftPointLbl.text = String(GameState.shared.leftScore)
+        rightPointLbl.text = String(GameState.shared.rightScore)
         
         self.physicsWorld.gravity = CGVector.init(dx: 0.0, dy: 0)
         physicsWorld.contactDelegate = self
@@ -97,20 +63,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             bombExplode(bodyOne: bodyOne, bodyTwo: bodyTwo)
             if contact.bodyA.node == leftSquirrel || contact.bodyB.node == leftSquirrel || contact.bodyA.node == rightSquirrel || contact.bodyB.node == rightSquirrel  {
                 if(contact.bodyA.node == leftSquirrel || contact.bodyB.node == leftSquirrel) {
-                    GameScore.shared.rightScore += 1
-                    rightPointLbl.text = String(GameScore.shared.rightScore)
+                    bombCounter = 1
+                    GameState.shared.rightScore += 1
+                    rightPointLbl.text = String(GameState.shared.rightScore)
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                         self.resetGameScene()
                     })
                
                 } else if(contact.bodyA.node == rightSquirrel || contact.bodyB.node == rightSquirrel) {
-                    GameScore.shared.leftScore += 1
-                    leftPointLbl.text = String(GameScore.shared.leftScore)
+                    bombCounter = 1
+                    GameState.shared.leftScore += 1
+                    leftPointLbl.text = String(GameState.shared.leftScore)
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                         self.resetGameScene()
                     })
                 }
-                if( GameScore.shared.leftScore == 3 || GameScore.shared.rightScore == 3) {
+                if( GameState.shared.leftScore == 3 || GameState.shared.rightScore == 3) {
                     gameOver()
                     
                 }
@@ -122,7 +90,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func gameOver(){
         let loseAction = SKAction.run() {
             let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
-            let gameOverScene = GameOverScene(size: self.size, won: false)
+            let gameOverScene = GameOverScene(size: self.size, won: self.player1Turn)
             self.view?.presentScene(gameOverScene, transition: reveal)
         }
         run(loseAction)
@@ -145,6 +113,41 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         )
         bodyOne.removeFromParent()
         bodyTwo.removeFromParent()
+        
+        bombCounter = 0
+        
+        if(player1Turn) {
+            player1Turn = false
+        } else {
+            player1Turn = true
+        }
+    }
+    
+    func bombDidNotHit(leBomb: SKSpriteNode) -> SKAction {
+        return SKAction.run {
+        let explosion = SKSpriteNode(imageNamed: "explosion")
+        explosion.position = leBomb.position
+        explosion.size = CGSize(width: 60, height: 60)
+        explosion.zPosition = 1
+        self.addChild(explosion)
+        self.run(self.explosionSound)
+        
+        explosion.run(
+            SKAction.sequence([
+                SKAction.wait(forDuration: 1.0),
+                SKAction.removeFromParent()
+                ])
+        )
+            leBomb.removeFromParent()
+            
+            self.bombCounter = 0
+            
+            if(self.player1Turn) {
+                self.player1Turn = false
+            } else {
+                self.player1Turn = true
+            }
+        }
     }
     
     func addBomb(player: SKSpriteNode, position: CGPoint) {
@@ -170,6 +173,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             loopStep = -1
         }
         
+        if(bombCounter == 0) {
         let bomb = SKSpriteNode(imageNamed: "bomb")
         bomb.position = CGPoint(x: player.position.x, y: player.position.y)
         bomb.size = CGSize(width: 15, height: 30)
@@ -180,7 +184,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bomb.physicsBody?.contactTestBitMask = PhysicsCategory.All
         bomb.physicsBody?.collisionBitMask = physicsCategory
 
+        
         addChild(bomb)
+        bombCounter += 1
         
         //let moveBomb = SKAction.move(to: CGPoint(x: position.x, y: position.y), duration: 4)
         
@@ -188,7 +194,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bezierPath.move(to: player.position)
         
         for i in stride(from: loopFrom, to: loopTo, by: loopStep) {
-            let nextPoint = flugkurve(t: CGFloat(i), x: player.position.x, y: player.position.y, x_in: position.x, y_in: position.y, player: loopStep)
+            let nextPoint = flugbahnCalc.flugkurve(t: CGFloat(i), x: player.position.x, y: player.position.y, x_in: position.x, y_in: position.y, player: loopStep)
             bezierPath.addLine(to: CGPoint(x: CGFloat(i), y: nextPoint))
         }
         
@@ -197,12 +203,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let moveBomb = SKAction.follow(bezierPath.cgPath, asOffset: false, orientToPath: false, duration: 3)
         let rotateBomb = SKAction.rotate(byAngle: -20, duration: 3)
-        let removeBomb = SKAction.removeFromParent()
+        let removeBomb = bombDidNotHit(leBomb: bomb)
         let groupBomb = SKAction.group([moveBomb, rotateBomb])
         //bomb.run(SKAction.repeatForever(groupBomb))
         bomb.run(SKAction.sequence([groupBomb, removeBomb]))
         
+        }
+      
         
+        
+    }
+    
+    func resetGameScene() {
+        
+        if let view = self.view as SKView? {
+            if let scene = SKScene(fileNamed: "GameScene") {
+                scene.scaleMode = .aspectFill
+                view.presentScene(scene)
+            }
+            
+            view.ignoresSiblingOrder = true
+            //            view.showsFPS = true
+            //            view.showsNodeCount = true
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -221,14 +244,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         addBomb(player: currentPlayer, position: touchLocation)
-        
-        if(player1Turn) {
-            player1Turn = false
-        } else {
-            player1Turn = true
-        }
-        
-        
         }
     
     func setupMatchfield() {
@@ -288,21 +303,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(rightTree)
     }
     
-    func resetGameScene() {
-   
-        if let view = self.view as SKView? {
-            if let scene = SKScene(fileNamed: "GameScene") {
-                scene.scaleMode = .aspectFill
-                view.presentScene(scene)
-            }
-            
-            view.ignoresSiblingOrder = true
-            view.showsFPS = true
-            view.showsNodeCount = true
-            
-            
-        }
-    }
+  
+    
+    
 }
 
 extension GameScene: MultiplayerServiceManagerDelegate {

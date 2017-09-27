@@ -31,6 +31,7 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     @IBAction func dismissBtn(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+        appDelegate.multiplayerManager.session.disconnect()
         appDelegate.multiplayerManager.browser.stopBrowsingForPeers()
         appDelegate.multiplayerManager.advertiser.stopAdvertisingPeer()
     }
@@ -56,7 +57,8 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedPeer = appDelegate.multiplayerManager.foundPeers[indexPath.row] as MCPeerID
-        
+        GameState.shared.player1 = self.appDelegate.multiplayerManager.peer.displayName
+        GameState.shared.player2 = self.appDelegate.multiplayerManager.foundPeers[indexPath.row].displayName
         appDelegate.multiplayerManager.browser.invitePeer(selectedPeer, to: appDelegate.multiplayerManager.session, withContext: nil, timeout: 20)
     }
     
@@ -73,6 +75,8 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         let alert = UIAlertController(title: "", message: "\(fromPeer) will mit dir spielen", preferredStyle: UIAlertControllerStyle.alert)
         
         let acceptAction: UIAlertAction = UIAlertAction(title: "Annehmen", style: UIAlertActionStyle.default) { (alertAction) -> Void in
+            GameState.shared.player2 = self.appDelegate.multiplayerManager.peer.displayName
+            GameState.shared.player1 = fromPeer
             self.appDelegate.multiplayerManager.invitationHandler(true, self.appDelegate.multiplayerManager.session)
         }
         
