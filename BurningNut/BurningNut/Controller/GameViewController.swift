@@ -44,10 +44,10 @@ class GameViewController: UIViewController {
 
             }
 
-        if(_playerCell != nil) {
-            let manager = _playerCell.delegate.getManager()
-            manager.send(message: _playerCell.name)
-        }
+//        if(_playerCell != nil) {
+//            let manager = _playerCell.delegate.getManager()
+//            manager.send(message: _playerCell.name)
+//        }
         
     }
 
