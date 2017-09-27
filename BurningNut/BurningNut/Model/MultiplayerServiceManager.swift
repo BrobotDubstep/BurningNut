@@ -18,6 +18,8 @@ protocol MultiplayerServiceManagerDelegate {
     func invitationWasReceived(fromPeer: String)
     
     func connectedWithPeer(peerID: MCPeerID)
+    
+    func bombAttack(position: String)
 }
 
 class MultiplayerServiceManager: NSObject, MCNearbyServiceAdvertiserDelegate, MCNearbyServiceBrowserDelegate, MCSessionDelegate {
@@ -102,8 +104,12 @@ class MultiplayerServiceManager: NSObject, MCNearbyServiceAdvertiserDelegate, MC
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        let dictionary: [String: AnyObject] = ["data": data as AnyObject, "fromPeer": peerID]
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "receivedMPCDataNotification"), object: dictionary)
+        //let dictionary: [String: AnyObject] = ["data": data as AnyObject, "fromPeer": peerID]
+        //let msg = data
+        //NotificationCenter.default.post(name: NSNotification.Name(rawValue: "receivedMPCDataNotification"), object: msg)
+        
+        let str = String(data: data, encoding: .utf8)!
+        delegate?.bombAttack(position: str)
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
@@ -120,17 +126,16 @@ class MultiplayerServiceManager: NSObject, MCNearbyServiceAdvertiserDelegate, MC
     
     //own stuff
     
-    func sendData(dictionaryWithData dictionary: Dictionary<String, String>, toPeer targetPeer: MCPeerID) -> Bool {
-        let dataToSend = NSKeyedArchiver.archivedData(withRootObject: dictionary)
-        let peersArray = NSArray(object: targetPeer)
-        var error: NSError?
+    func sendData(position: String) -> Void {
         
-//        if !session.sendData(dataToSend, toPeers: peersArray, withMode: MCSessionSendDataMode.Reliable, error: &error) {
-//            print(error?.localizedDescription)
-//            return false
-//        }
-        
-        return true
+        //if session.connectedPeers.count > 0 {
+            do {
+                try self.session.send(position.data(using: .utf8)!, toPeers: session.connectedPeers, with: .reliable)
+            }
+            catch let error {
+                NSLog("%@", "Error for sending: \(error)")
+            }
+        //}
     }
 }
 

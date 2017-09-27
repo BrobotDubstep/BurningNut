@@ -8,6 +8,7 @@
 
 import SpriteKit
 import GameplayKit
+import MultipeerConnectivity
 
 struct PhysicsCategory {
     static let None      : UInt32 = 0
@@ -20,6 +21,8 @@ struct PhysicsCategory {
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
+    
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     var rightPointLbl = SKLabelNode()
     var leftPointLbl = SKLabelNode()
@@ -78,6 +81,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.physicsWorld.gravity = CGVector.init(dx: 0.0, dy: 0)
         physicsWorld.contactDelegate = self
+        
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -144,6 +148,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func addBomb(player: SKSpriteNode, position: CGPoint) {
+        
+        appDelegate.multiplayerManager.sendData(position: NSStringFromCGPoint(position))
         
         var physicsCategory: UInt32
         var bombCategory: UInt32
@@ -297,4 +303,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
         }
     }
+}
+
+extension GameScene: MultiplayerServiceManagerDelegate {
+    func foundPeer() {
+        
+    }
+    
+    func lostPeer() {
+        
+    }
+    
+    func invitationWasReceived(fromPeer: String) {
+        
+    }
+    
+    func connectedWithPeer(peerID: MCPeerID) {
+        
+    }
+    
+    func bombAttack(position: String) {
+        
+        addBomb(player: leftSquirrel, position: CGPointFromString(position))
+    }
+    
+    
 }

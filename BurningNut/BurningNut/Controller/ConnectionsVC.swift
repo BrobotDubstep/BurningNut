@@ -16,12 +16,6 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
-
-
-    
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -94,10 +88,15 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
     }
     
-    
     func connectedWithPeer(peerID: MCPeerID) {
+        
+        appDelegate.multiplayerManager.browser.stopBrowsingForPeers()
+        appDelegate.multiplayerManager.advertiser.stopAdvertisingPeer()
+        
         OperationQueue.main.addOperation { () -> Void in
             self.performSegue(withIdentifier: "GameViewController", sender: self)
         }
     }
+    
+    func bombAttack(position: String) {}
 }
