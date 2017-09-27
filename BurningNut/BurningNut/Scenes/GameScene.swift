@@ -21,8 +21,6 @@ struct PhysicsCategory {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    var rightPointCntr = 0
-    var leftPointCntr = 0
     var rightPointLbl = SKLabelNode()
     var leftPointLbl = SKLabelNode()
     let leftSquirrel = SKSpriteNode(imageNamed: "minisquirrelRight")
@@ -75,8 +73,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.setupMatchfield()
         
-        self.leftPointLbl = (self.childNode(withName: "//leftPointLbl") as? SKLabelNode)!
-        self.rightPointLbl = (self.childNode(withName: "//rightPointLbl") as? SKLabelNode)!
+        leftPointLbl.text = String(GameScore.shared.leftScore)
+        rightPointLbl.text = String(GameScore.shared.rightScore)
         
         self.physicsWorld.gravity = CGVector.init(dx: 0.0, dy: 0)
         physicsWorld.contactDelegate = self
@@ -95,17 +93,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             bombExplode(bodyOne: bodyOne, bodyTwo: bodyTwo)
             if contact.bodyA.node == leftSquirrel || contact.bodyB.node == leftSquirrel || contact.bodyA.node == rightSquirrel || contact.bodyB.node == rightSquirrel  {
                 if(contact.bodyA.node == leftSquirrel || contact.bodyB.node == leftSquirrel) {
-                    rightPointCntr += 1
-                    rightPointLbl.text = String(rightPointCntr)
-                    setupMatchfield()
+                    GameScore.shared.rightScore += 1
+                    rightPointLbl.text = String(GameScore.shared.rightScore)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                        self.resetGameScene()
+                    })
+               
                 } else if(contact.bodyA.node == rightSquirrel || contact.bodyB.node == rightSquirrel) {
-                    leftPointCntr += 1
-                    leftPointLbl.text = String(leftPointCntr)
-                    setupMatchfield()
+                    GameScore.shared.leftScore += 1
+                    leftPointLbl.text = String(GameScore.shared.leftScore)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                        self.resetGameScene()
+                    })
                 }
-                
-                if(leftPointCntr == 3 || rightPointCntr == 3) {
+                if( GameScore.shared.leftScore == 3 || GameScore.shared.rightScore == 3) {
                     gameOver()
+                    
                 }
         }
 
@@ -224,8 +227,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func setupMatchfield() {
         
-     
-
+        leftPointLbl.position = CGPoint(x: -310, y: 135)
+        leftPointLbl.zPosition = 7
+        leftPointLbl.fontColor = UIColor.black
+        addChild(leftPointLbl)
+        
+        rightPointLbl.position = CGPoint(x: 310, y: 135)
+        rightPointLbl.zPosition = 7
+        rightPointLbl.fontColor = UIColor.black
+        addChild(rightPointLbl)
+        
         leftSquirrel.position = CGPoint(x: -307.839, y: -89.305)
         leftSquirrel.size = CGSize(width: 51.321, height: 59.464)
         leftSquirrel.anchorPoint.x = 0.5
@@ -269,6 +280,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         rightTree.zPosition = 1
         rightTree.physicsBody = SKPhysicsBody(rectangleOf: rightTree.size)
         addChild(rightTree)
-        
+    }
+    
+    func resetGameScene() {
+   
+        if let view = self.view as SKView? {
+            if let scene = SKScene(fileNamed: "GameScene") {
+                scene.scaleMode = .aspectFill
+                view.presentScene(scene)
+            }
+            
+            view.ignoresSiblingOrder = true
+            view.showsFPS = true
+            view.showsNodeCount = true
+            
+            
+        }
     }
 }
