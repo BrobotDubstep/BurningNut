@@ -28,6 +28,11 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         
     }
     
+    @IBAction func backBtnPressed(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+        playerService.session.disconnect()
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "PlayerCell", for: indexPath) as? PlayerCell {
             let player = connectedPlayers[indexPath.row]

@@ -126,7 +126,7 @@
                                     <navigationItem title="Verbindungen" id="MeG-fs-zOE">
                                         <barButtonItem key="leftBarButtonItem" systemItem="stop" id="jm9-fI-nkg">
                                             <connections>
-                                                <segue destination="Me4-8j-wl0" kind="show" id="aSh-ga-Huh"/>
+                                                <action selector="backBtnPressed:" destination="buW-j7-op2" id="gU6-5p-a0E"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>

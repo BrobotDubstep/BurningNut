@@ -25,7 +25,6 @@ class GameOverScene: SKScene {
         label.fontColor = SKColor.black
         label.position = CGPoint(x: size.width/2, y: size.height/2)
         addChild(label)
-        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -42,10 +41,7 @@ class GameOverScene: SKScene {
             view.ignoresSiblingOrder = true
             view.showsFPS = true
             view.showsNodeCount = true
-            
-            
         }
-        
     }
     
     required init(coder aDecoder: NSCoder) {
