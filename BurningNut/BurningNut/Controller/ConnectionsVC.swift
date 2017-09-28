@@ -101,6 +101,4 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             self.performSegue(withIdentifier: "GameViewController", sender: self)
         }
     }
-    
-    func bombAttack(position: String) {}
 }
