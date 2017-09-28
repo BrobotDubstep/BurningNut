@@ -63,8 +63,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         leftPointLbl.text = String(GameState.shared.leftScore)
         rightPointLbl.text = String(GameState.shared.rightScore)
         
-        self.physicsWorld.gravity = CGVector.init(dx: 0.0, dy: 0)
-        physicsWorld.contactDelegate = self
+        self.physicsWorld.gravity = CGVector.init(dx: 0.0, dy: -6)
+        self.physicsWorld.contactDelegate = self
+        self.physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
+        self.physicsBody?.categoryBitMask = PhysicsCategory.Frame
+        self.physicsBody?.contactTestBitMask = PhysicsCategory.LeftSquirrel | PhysicsCategory.RightSquirrel
         
         NotificationCenter.default.addObserver(self, selector: #selector(bombAttack(notification:)), name: NSNotification.Name("bomb"), object: nil)
     }
@@ -82,14 +85,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func didBegin(_ contact: SKPhysicsContact) {
         
-        if (contact.bodyA.node == leftSquirrel && contact.bodyB.categoryBitMask == PhysicsCategory.LeftBomb) ||
-            (contact.bodyA.node == rightSquirrel && contact.bodyB.categoryBitMask == PhysicsCategory.RightBomb) ||
-            (contact.bodyB.node == rightSquirrel && contact.bodyA.categoryBitMask == PhysicsCategory.RightBomb) ||
-            (contact.bodyB.node == rightSquirrel && contact.bodyA.categoryBitMask == PhysicsCategory.RightBomb) {
-            return
+        if contact.bodyA.categoryBitMask == PhysicsCategory.Frame || contact.bodyB.categoryBitMask == PhysicsCategory.Frame {
+            if(contact.bodyA.node == leftSquirrel || contact.bodyB.node == leftSquirrel) {
+                bombCounter = 1
+                GameState.shared.rightScore += 1
+                rightPointLbl.text = String(GameState.shared.rightScore)
+                if(playerNumber == 1) {
+                    playerTurnLbl.text = "Du wurdest getroffen"
+                } else {
+                    playerTurnLbl.text = "Treffer!"
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                    self.resetGameScene()
+                })
+                
+            } else if(contact.bodyA.node == rightSquirrel || contact.bodyB.node == rightSquirrel) {
+                bombCounter = 1
+                GameState.shared.leftScore += 1
+                leftPointLbl.text = String(GameState.shared.leftScore)
+                if(playerNumber == 2) {
+                    playerTurnLbl.text = "Du wurdest getroffen"
+                } else {
+                    playerTurnLbl.text = "Treffer!"
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                    self.resetGameScene()
+                })
+            }
+            if( GameState.shared.leftScore == 3 || GameState.shared.rightScore == 3) {
+                gameOver()
+                
+            }
         }
-        
-        if let bodyOne = contact.bodyA.node as? SKSpriteNode, let bodyTwo = contact.bodyB.node as? SKSpriteNode {
+        else if let bodyOne = contact.bodyA.node as? SKSpriteNode, let bodyTwo = contact.bodyB.node as? SKSpriteNode {
             bombExplode(bodyOne: bodyOne, bodyTwo: bodyTwo)
             if contact.bodyA.node == leftSquirrel || contact.bodyB.node == leftSquirrel || contact.bodyA.node == rightSquirrel || contact.bodyB.node == rightSquirrel  {
                 if(contact.bodyA.node == leftSquirrel || contact.bodyB.node == leftSquirrel) {
@@ -333,24 +361,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         rightPointLbl.fontColor = UIColor.black
         addChild(rightPointLbl)
         
-        leftSquirrel.position = CGPoint(x: -307.839, y: -89.305)
+        leftSquirrel.position = CGPoint(x: -300.839, y: -89.305)
         leftSquirrel.size = CGSize(width: 51.321, height: 59.464)
         leftSquirrel.anchorPoint.x = 0.5
         leftSquirrel.anchorPoint.y = 0.5
         leftSquirrel.zPosition = 1
         leftSquirrel.physicsBody = SKPhysicsBody(rectangleOf: leftSquirrel.size)
-        leftSquirrel.physicsBody?.isDynamic = false
+        //leftSquirrel.physicsBody?.isDynamic = false
         leftSquirrel.physicsBody?.categoryBitMask = PhysicsCategory.LeftSquirrel
+        leftSquirrel.physicsBody?.contactTestBitMask = PhysicsCategory.RightBomb | PhysicsCategory.Frame
+        leftSquirrel.physicsBody?.collisionBitMask = PhysicsCategory.Environment
         addChild(leftSquirrel)
         
-        rightSquirrel.position = CGPoint(x: 307.839, y: -89.305)
+        rightSquirrel.position = CGPoint(x: 300.839, y: -89.305)
         rightSquirrel.size = CGSize(width: 51.321, height: 59.464)
         rightSquirrel.anchorPoint.x = 0.5
         rightSquirrel.anchorPoint.y = 0.5
         rightSquirrel.zPosition = 1
         rightSquirrel.physicsBody = SKPhysicsBody(rectangleOf: rightSquirrel.size)
-        rightSquirrel.physicsBody?.isDynamic = false
+        //rightSquirrel.physicsBody?.isDynamic = false
         rightSquirrel.physicsBody?.categoryBitMask = PhysicsCategory.RightSquirrel
+        rightSquirrel.physicsBody?.contactTestBitMask = PhysicsCategory.LeftBomb | PhysicsCategory.Frame
+        rightSquirrel.physicsBody?.collisionBitMask = PhysicsCategory.Environment
         addChild(rightSquirrel)
         
         middleTree.position = CGPoint(x: 0, y: -4.238)
@@ -359,6 +391,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         middleTree.anchorPoint.y = 0.5
         middleTree.zPosition = 1
         middleTree.physicsBody = SKPhysicsBody(rectangleOf: middleTree.size)
+        middleTree.physicsBody?.categoryBitMask = PhysicsCategory.Environment
+        middleTree.physicsBody?.contactTestBitMask = PhysicsCategory.LeftBomb | PhysicsCategory.RightBomb
+        middleTree.physicsBody?.collisionBitMask = PhysicsCategory.None
+        middleTree.physicsBody?.affectedByGravity = false
         addChild(middleTree)
         
         leftTree.position = CGPoint(x: -147.94, y: -62.205)
@@ -367,6 +403,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         leftTree.anchorPoint.y = 0.5
         leftTree.zPosition = 1
         leftTree.physicsBody = SKPhysicsBody(rectangleOf: leftTree.size)
+        leftTree.physicsBody?.categoryBitMask = PhysicsCategory.Environment
+        leftTree.physicsBody?.contactTestBitMask = PhysicsCategory.LeftBomb | PhysicsCategory.RightBomb
+        leftTree.physicsBody?.collisionBitMask = PhysicsCategory.None
+        leftTree.physicsBody?.affectedByGravity = false
         addChild(leftTree)
         
         rightTree.position = CGPoint(x: 147.94, y: -62.205)
@@ -375,7 +415,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         rightTree.anchorPoint.y = 0.5
         rightTree.zPosition = 1
         rightTree.physicsBody = SKPhysicsBody(rectangleOf: rightTree.size)
+        rightTree.physicsBody?.categoryBitMask = PhysicsCategory.Environment
+        rightTree.physicsBody?.contactTestBitMask = PhysicsCategory.LeftBomb | PhysicsCategory.RightBomb
+        rightTree.physicsBody?.collisionBitMask = PhysicsCategory.None
+        rightTree.physicsBody?.affectedByGravity = false
         addChild(rightTree)
     }
-    
 }
