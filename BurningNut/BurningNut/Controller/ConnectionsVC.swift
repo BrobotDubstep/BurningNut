@@ -11,7 +11,7 @@ import MultipeerConnectivity
 
 
 class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MultiplayerServiceManagerDelegate {
-
+    
     @IBOutlet weak var tableView: UITableView!
     
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -19,7 +19,7 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       
+        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -43,12 +43,12 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       
+        
         if let cell = tableView.dequeueReusableCell(withIdentifier: "PlayerCell", for: indexPath) as? PlayerCell {
-        
-        cell.playerLbl.text = appDelegate.multiplayerManager.foundPeers[indexPath.row].displayName
-        
-         return cell
+            
+            cell.playerLbl.text = appDelegate.multiplayerManager.foundPeers[indexPath.row].displayName
+            
+            return cell
         } else {
             return UITableViewCell()
         }
@@ -56,9 +56,12 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        GameState.shared.playerNumber = 1
         let selectedPeer = appDelegate.multiplayerManager.foundPeers[indexPath.row] as MCPeerID
         appDelegate.multiplayerManager.browser.invitePeer(selectedPeer, to: appDelegate.multiplayerManager.session, withContext: nil, timeout: 20)
     }
+    
+  
     
     func foundPeer() {
         tableView.reloadData()

@@ -46,12 +46,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.setupMatchfield()
         
-        if(GameState.shared.playerNumber == 0) {
-            playerNumber = 1
-            GameState.shared.playerNumber = 1
-        } else {
-            playerNumber = GameState.shared.playerNumber
-        }
+//        if(GameState.shared.playerNumber == 0) {
+//            playerNumber = 1
+//            GameState.shared.playerNumber = 1
+//        } else {
+//            playerNumber = GameState.shared.playerNumber
+//        }
         
         playerNumber = GameState.shared.playerNumber
         
