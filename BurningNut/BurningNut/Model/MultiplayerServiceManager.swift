@@ -111,7 +111,7 @@ class MultiplayerServiceManager: NSObject, MCNearbyServiceAdvertiserDelegate, MC
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         //NotificationCenter.default.post(name: NSNotification.Name("bomb"), object: data)
         let msg = String(data: data, encoding: String.Encoding.utf8)
-        NotificationCenter.default.post(name: NSNotification.Name("bomb"), object: nil, userInfo: ["position": msg])
+        NotificationCenter.default.post(name: NSNotification.Name("bomb"), object: nil, userInfo: ["position": msg!])
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {

@@ -25,7 +25,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var bombCounter = 0
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    var bombCounter = 0
+    
     var rightPointLbl = SKLabelNode()
     var leftPointLbl = SKLabelNode()
     let leftSquirrel = SKSpriteNode(imageNamed: "minisquirrelRight")
@@ -34,7 +34,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let leftTree = SKSpriteNode(imageNamed: "tree-1")
     let rightTree = SKSpriteNode(imageNamed: "tree-1")
     let explosionSound = SKAction.playSoundFileNamed("explosion.mp3", waitForCompletion: true)
-    var player1Turn = true
+    var playerTurn = 1
     var flugbahnCalc = CalcFlugbahn()
     
     
@@ -96,8 +96,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func gameOver(){
         let loseAction = SKAction.run() {
+            var playerBool: Bool
             let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
-            let gameOverScene = GameOverScene(size: self.size, won: self.player1Turn)
+            if(self.playerTurn == 1) {
+                playerBool = true
+            } else {
+                playerBool = false
+            }
+            let gameOverScene = GameOverScene(size: self.size, won: playerBool)
             self.view?.presentScene(gameOverScene, transition: reveal)
         }
         run(loseAction)
@@ -123,10 +129,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         bombCounter = 0
         
-        if(player1Turn) {
-            player1Turn = false
+        if(playerTurn == 1) {
+            playerTurn = 2
+            GameState.shared.playerNumber = 2
         } else {
-            player1Turn = true
+            playerTurn = 1
+            GameState.shared.playerNumber = 1
         }
     }
     
@@ -149,10 +157,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             self.bombCounter = 0
             
-            if(self.player1Turn) {
-                self.player1Turn = false
+            if(self.playerTurn == 1) {
+                self.playerTurn = 2
+                GameState.shared.playerNumber = 2
             } else {
-                self.player1Turn = true
+                self.playerTurn = 1
+                GameState.shared.playerNumber = 1
             }
         }
     }
@@ -178,7 +188,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             loopStep = -1
         }
         
-        if(bombCounter == 0) {
+        if(bombCounter == 0 && GameState.shared.playerNumber == playerTurn) {
         let bomb = SKSpriteNode(imageNamed: "bomb")
         bomb.position = CGPoint(x: player.position.x, y: player.position.y)
         bomb.size = CGSize(width: 15, height: 30)
@@ -242,7 +252,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         let touchLocation = touch.location(in: self)
         
-        if(player1Turn == true) {
+        if(playerTurn == 1) {
             currentPlayer = leftSquirrel
         } else {
             currentPlayer = rightSquirrel

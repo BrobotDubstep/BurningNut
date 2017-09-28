@@ -12,8 +12,7 @@ class GameState {
     static let shared = GameState()
     var leftScore = 0
     var rightScore = 0
-    var player1 = ""
-    var player2 = ""
+    var playerNumber = 0
     
     private init() { }
 }
