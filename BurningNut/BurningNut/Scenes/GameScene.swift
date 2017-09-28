@@ -61,7 +61,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     @objc func bombAttack(notification: NSNotification) {
         guard let text = notification.userInfo?["position"] as? String else { return }
         var squirrel = SKSpriteNode()
-        if(GameState.shared.playerNumber == 1) {
+        if(playerTurn == 1) {
             squirrel = leftSquirrel
         } else {
             squirrel = rightSquirrel
@@ -85,6 +85,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     bombCounter = 1
                     GameState.shared.rightScore += 1
                     rightPointLbl.text = String(GameState.shared.rightScore)
+                    
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                         self.resetGameScene()
                     })
