@@ -52,6 +52,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             playerNumber = GameState.shared.playerNumber
         }
         
+        playerNumber = GameState.shared.playerNumber
+        
         if(playerNumber == 1) {
             playerTurnLbl.text = playerTurnTxt
         } else {
@@ -94,8 +96,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     bombCounter = 1
                     GameState.shared.rightScore += 1
                     rightPointLbl.text = String(GameState.shared.rightScore)
-                    
-                    
+                    if(playerNumber == 1) {
+                        playerTurnLbl.text = "Du wurdest getroffen"
+                    } else {
+                        playerTurnLbl.text = "Treffer!"
+                    }
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                         self.resetGameScene()
                     })
@@ -104,6 +109,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     bombCounter = 1
                     GameState.shared.leftScore += 1
                     leftPointLbl.text = String(GameState.shared.leftScore)
+                    if(playerNumber == 2) {
+                        playerTurnLbl.text = "Du wurdest getroffen"
+                    } else {
+                        playerTurnLbl.text = "Treffer!"
+                    }
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                         self.resetGameScene()
                     })
