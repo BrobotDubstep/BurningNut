@@ -43,7 +43,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.setupMatchfield()
         
-        self.playerNumber = GameState.shared.playerNumber
+        if(GameState.shared.playerNumber == 0) {
+            playerNumber = 1
+        } else {
+            playerNumber = GameState.shared.playerNumber
+        }
         
         leftPointLbl.text = String(GameState.shared.leftScore)
         rightPointLbl.text = String(GameState.shared.rightScore)
@@ -139,8 +143,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if(playerTurn == 1) {
             playerTurn = 2
+            GameState.shared.playerNumber = 2
         } else {
             playerTurn = 1
+            GameState.shared.playerNumber = 1
         }
     }
     
@@ -194,7 +200,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             loopStep = -1
         }
         
-        if(bombCounter == 0 && playerNumber == playerTurn) {
+        if(bombCounter == 0) {
         let bomb = SKSpriteNode(imageNamed: "bomb")
         bomb.position = CGPoint(x: player.position.x, y: player.position.y)
         bomb.size = CGSize(width: 15, height: 30)

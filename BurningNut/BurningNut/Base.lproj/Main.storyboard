@@ -154,7 +154,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="playerLbl" destination="dny-88-qla" id="ApO-et-oc2"/>
-                                            <segue destination="BV1-FR-VrT" kind="showDetail" identifier="GameViewController" id="ifG-Cn-Ist"/>
+                                            <segue destination="BV1-FR-VrT" kind="show" identifier="GameViewController" id="uMa-dt-fBg"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -201,6 +201,6 @@
         <image name="wald" width="960" height="640"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ifG-Cn-Ist"/>
+        <segue reference="uMa-dt-fBg"/>
     </inferredMetricsTieBreakers>
 </document>
