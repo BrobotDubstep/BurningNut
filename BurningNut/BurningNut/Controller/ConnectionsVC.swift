@@ -64,7 +64,6 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         tableView.reloadData()
     }
     
-    
     func lostPeer() {
         tableView.reloadData()
     }

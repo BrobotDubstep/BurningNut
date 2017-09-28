@@ -36,7 +36,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let explosionSound = SKAction.playSoundFileNamed("explosion.mp3", waitForCompletion: true)
     var playerTurn = 1
     var playerNumber = 0
+    var playerTurnLbl = SKLabelNode()
     var flugbahnCalc = CalcFlugbahn()
+    var playerTurnTxt = "Du bist dran!"
     
     
     override func didMove(to view: SKView) {
@@ -48,6 +50,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             GameState.shared.playerNumber = 1
         } else {
             playerNumber = GameState.shared.playerNumber
+        }
+        
+        if(playerNumber == 1) {
+            playerTurnLbl.text = playerTurnTxt
+        } else {
+            playerTurnLbl.text = ""
         }
         
         leftPointLbl.text = String(GameState.shared.leftScore)
@@ -144,12 +152,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         bombCounter = 0
         
-        if(playerTurn == 1) {
-            playerTurn = 2
-           
+        if(self.playerTurn == 1) {
+            self.playerTurn = 2
+            if(self.playerNumber == 2) {
+                self.playerTurnLbl.text = self.playerTurnTxt
+            } else {
+                self.playerTurnLbl.text = ""
+            }
+            
         } else {
-            playerTurn = 1
-           
+            self.playerTurn = 1
+            self.playerTurnLbl.text = ""
+            if(playerNumber == 1) {
+                playerTurnLbl.text = playerTurnTxt
+            } else {
+                playerTurnLbl.text = ""
+            }
         }
     }
     
@@ -174,10 +192,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             if(self.playerTurn == 1) {
                 self.playerTurn = 2
+                if(self.playerNumber == 2) {
+                    self.playerTurnLbl.text = self.playerTurnTxt
+                } else {
+                    self.playerTurnLbl.text = ""
+                }
                 
             } else {
                 self.playerTurn = 1
-                
+                self.playerTurnLbl.text = ""
+                if(self.playerNumber == 1) {
+                    self.playerTurnLbl.text = self.playerTurnTxt
+                } else {
+                    self.playerTurnLbl.text = ""
+                }
             }
         }
     }
@@ -279,6 +307,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     
     func setupMatchfield() {
+        
+        playerTurnLbl.position = CGPoint(x: 0, y: 135)
+        playerTurnLbl.zPosition = 7
+        playerTurnLbl.fontColor = UIColor.black
+        addChild(playerTurnLbl)
         
         leftPointLbl.position = CGPoint(x: -310, y: 135)
         leftPointLbl.zPosition = 7
