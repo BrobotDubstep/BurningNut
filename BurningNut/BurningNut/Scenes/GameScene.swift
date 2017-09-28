@@ -385,7 +385,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         middleTree.anchorPoint.x = 0.5
         middleTree.anchorPoint.y = 0.5
         middleTree.zPosition = 1
-        middleTree.physicsBody = SKPhysicsBody(rectangleOf: middleTree.size)
+        middleTree.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 10, height: middleTree.size.height))
         middleTree.physicsBody?.categoryBitMask = PhysicsCategory.Environment
         middleTree.physicsBody?.contactTestBitMask = PhysicsCategory.LeftBomb | PhysicsCategory.RightBomb
         middleTree.physicsBody?.collisionBitMask = PhysicsCategory.None
@@ -397,7 +397,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         leftTree.anchorPoint.x = 0.5
         leftTree.anchorPoint.y = 0.5
         leftTree.zPosition = 1
-        leftTree.physicsBody = SKPhysicsBody(rectangleOf: leftTree.size)
+        leftTree.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 10, height: middleTree.size.height))
         leftTree.physicsBody?.categoryBitMask = PhysicsCategory.Environment
         leftTree.physicsBody?.contactTestBitMask = PhysicsCategory.LeftBomb | PhysicsCategory.RightBomb
         leftTree.physicsBody?.collisionBitMask = PhysicsCategory.None
@@ -409,7 +409,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         rightTree.anchorPoint.x = 0.5
         rightTree.anchorPoint.y = 0.5
         rightTree.zPosition = 1
-        rightTree.physicsBody = SKPhysicsBody(rectangleOf: rightTree.size)
+        rightTree.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 10, height: middleTree.size.height))
         rightTree.physicsBody?.categoryBitMask = PhysicsCategory.Environment
         rightTree.physicsBody?.contactTestBitMask = PhysicsCategory.LeftBomb | PhysicsCategory.RightBomb
         rightTree.physicsBody?.collisionBitMask = PhysicsCategory.None
