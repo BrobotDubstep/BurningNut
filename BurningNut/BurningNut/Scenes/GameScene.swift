@@ -145,10 +145,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if(playerTurn == 1) {
             playerTurn = 2
-            GameState.shared.playerNumber = 2
+           
         } else {
             playerTurn = 1
-            GameState.shared.playerNumber = 1
+           
         }
     }
     
@@ -173,10 +173,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             if(self.playerTurn == 1) {
                 self.playerTurn = 2
-                GameState.shared.playerNumber = 2
+                
             } else {
                 self.playerTurn = 1
-                GameState.shared.playerNumber = 1
+                
             }
         }
     }
