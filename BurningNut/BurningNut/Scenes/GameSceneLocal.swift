@@ -8,15 +8,12 @@
 
 import SpriteKit
 import GameplayKit
-import MultipeerConnectivity
+
 
 
 class GameSceneLocal: SKScene, SKPhysicsContactDelegate {
     
     var bombCounter = 0
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    
-    
     var rightPointLbl = SKLabelNode()
     var leftPointLbl = SKLabelNode()
     let leftSquirrel = SKSpriteNode(imageNamed: "minisquirrelRight")
@@ -26,30 +23,16 @@ class GameSceneLocal: SKScene, SKPhysicsContactDelegate {
     let rightTree = SKSpriteNode(imageNamed: "tree-1")
     let explosionSound = SKAction.playSoundFileNamed("explosion.mp3", waitForCompletion: true)
     var playerTurn = 1
-    var playerNumber = 0
     var playerTurnLbl = SKLabelNode()
     var flugbahnCalc = CalcFlugbahn()
-    var playerTurnTxt = "Du bist dran!"
     
     
     override func didMove(to view: SKView) {
         
         self.setupMatchfield()
-        
-//        if(GameState.shared.playerNumber == 0) {
-//            playerNumber = 1
-//            GameState.shared.playerNumber = 1
-//        } else {
-//            playerNumber = GameState.shared.playerNumber
-//        }
-        
-        playerNumber = GameState.shared.playerNumber
-        
-        if(playerNumber == 1) {
-            playerTurnLbl.text = playerTurnTxt
-        } else {
-            playerTurnLbl.text = ""
-        }
+
+        playerTurnLbl.text = "Spieler 1 ist dran"
+       
         
         leftPointLbl.text = String(GameState.shared.leftScore)
         rightPointLbl.text = String(GameState.shared.rightScore)
@@ -60,7 +43,6 @@ class GameSceneLocal: SKScene, SKPhysicsContactDelegate {
         self.physicsBody?.categoryBitMask = PhysicsCategory.Frame
         self.physicsBody?.contactTestBitMask = PhysicsCategory.LeftSquirrel | PhysicsCategory.RightSquirrel
         
-        NotificationCenter.default.addObserver(self, selector: #selector(bombAttack(notification:)), name: NSNotification.Name("bomb"), object: nil)
     }
     
     @objc func bombAttack(notification: NSNotification) {
@@ -81,11 +63,7 @@ class GameSceneLocal: SKScene, SKPhysicsContactDelegate {
                 bombCounter = 1
                 GameState.shared.rightScore += 1
                 rightPointLbl.text = String(GameState.shared.rightScore)
-                if(playerNumber == 1) {
-                    playerTurnLbl.text = "Du wurdest getroffen"
-                } else {
-                    playerTurnLbl.text = "Treffer!"
-                }
+              
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                     self.resetGameScene()
                 })
@@ -94,11 +72,7 @@ class GameSceneLocal: SKScene, SKPhysicsContactDelegate {
                 bombCounter = 1
                 GameState.shared.leftScore += 1
                 leftPointLbl.text = String(GameState.shared.leftScore)
-                if(playerNumber == 2) {
-                    playerTurnLbl.text = "Du wurdest getroffen"
-                } else {
-                    playerTurnLbl.text = "Treffer!"
-                }
+              
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                     self.resetGameScene()
                 })
@@ -115,11 +89,7 @@ class GameSceneLocal: SKScene, SKPhysicsContactDelegate {
                     bombCounter = 1
                     GameState.shared.rightScore += 1
                     rightPointLbl.text = String(GameState.shared.rightScore)
-                    if(playerNumber == 1) {
-                        playerTurnLbl.text = "Du wurdest getroffen"
-                    } else {
-                        playerTurnLbl.text = "Treffer!"
-                    }
+                  
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                         self.resetGameScene()
                     })
@@ -128,11 +98,7 @@ class GameSceneLocal: SKScene, SKPhysicsContactDelegate {
                     bombCounter = 1
                     GameState.shared.leftScore += 1
                     leftPointLbl.text = String(GameState.shared.leftScore)
-                    if(playerNumber == 2) {
-                        playerTurnLbl.text = "Du wurdest getroffen"
-                    } else {
-                        playerTurnLbl.text = "Treffer!"
-                    }
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                         self.resetGameScene()
                     })
@@ -155,7 +121,7 @@ class GameSceneLocal: SKScene, SKPhysicsContactDelegate {
             } else {
                 playerBool = false
             }
-            let gameOverScene = GameOverScene(size: self.size, won: playerBool)
+            let gameOverScene = LocalGameOver(size: self.size, won: playerBool)
             self.view?.presentScene(gameOverScene, transition: reveal)
         }
         run(loseAction)
@@ -183,21 +149,12 @@ class GameSceneLocal: SKScene, SKPhysicsContactDelegate {
         
         if(self.playerTurn == 1) {
             self.playerTurn = 2
-            if(self.playerNumber == 2) {
-                self.playerTurnLbl.text = self.playerTurnTxt
-            } else {
-                self.playerTurnLbl.text = ""
-            }
-            
+            self.playerTurnLbl.text = "Spieler 2 ist dran!"
         } else {
             self.playerTurn = 1
-            self.playerTurnLbl.text = ""
-            if(playerNumber == 1) {
-                playerTurnLbl.text = playerTurnTxt
-            } else {
-                playerTurnLbl.text = ""
-            }
+            self.playerTurnLbl.text = "Spieler 1 ist dran!"
         }
+        
     }
     
     func bombDidNotHit(leBomb: SKSpriteNode) -> SKAction {
@@ -221,21 +178,12 @@ class GameSceneLocal: SKScene, SKPhysicsContactDelegate {
             
             if(self.playerTurn == 1) {
                 self.playerTurn = 2
-                if(self.playerNumber == 2) {
-                    self.playerTurnLbl.text = self.playerTurnTxt
-                } else {
-                    self.playerTurnLbl.text = ""
-                }
-                
+                self.playerTurnLbl.text = "Spieler 2 ist dran!"
             } else {
                 self.playerTurn = 1
-                self.playerTurnLbl.text = ""
-                if(self.playerNumber == 1) {
-                    self.playerTurnLbl.text = self.playerTurnTxt
-                } else {
-                    self.playerTurnLbl.text = ""
-                }
+                self.playerTurnLbl.text = "Spieler 1 ist dran!"
             }
+
         }
     }
     
@@ -293,7 +241,6 @@ class GameSceneLocal: SKScene, SKPhysicsContactDelegate {
             let rotateBomb = SKAction.rotate(byAngle: -20, duration: 3)
             let removeBomb = bombDidNotHit(leBomb: bomb)
             let groupBomb = SKAction.group([moveBomb, rotateBomb])
-            //bomb.run(SKAction.repeatForever(groupBomb))
             bomb.run(SKAction.sequence([groupBomb, removeBomb]))
             
         }
@@ -305,20 +252,18 @@ class GameSceneLocal: SKScene, SKPhysicsContactDelegate {
     func resetGameScene() {
         
         if let view = self.view as SKView? {
-            if let scene = SKScene(fileNamed: "GameScene") {
+            if let scene = SKScene(fileNamed: "GameSceneLocal") {
                 scene.scaleMode = .aspectFill
                 view.presentScene(scene)
             }
             
             view.ignoresSiblingOrder = true
-            //            view.showsFPS = true
-            //            view.showsNodeCount = true
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        if(playerNumber == playerTurn) {
+       
             var currentPlayer: SKSpriteNode
             guard let touch = touches.first else {
                 return
@@ -332,8 +277,7 @@ class GameSceneLocal: SKScene, SKPhysicsContactDelegate {
             }
             
             addBomb(player: currentPlayer, position: touchLocation)
-            appDelegate.multiplayerManager.sendData(position: NSStringFromCGPoint(touchLocation))
-        }
+        
     }
     
     func setupMatchfield() {
