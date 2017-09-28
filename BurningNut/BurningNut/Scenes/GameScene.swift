@@ -11,13 +11,13 @@ import GameplayKit
 import MultipeerConnectivity
 
 struct PhysicsCategory {
-    static let None      : UInt32 = 0
-    static let All       : UInt32 = UInt32.max
-    static let RightSquirrel: UInt32 = 0b10
-    static let LeftSquirrel: UInt32 = 0b1
-    static let LeftBomb: UInt32 = 0b11
-    static let RightBomb: UInt32 = 0b100
-
+    //static let None      : UInt32 = 0
+    //static let All       : UInt32 = UInt32.max
+    static let RightSquirrel    : UInt32 = 0x1 << 0
+    static let LeftSquirrel     : UInt32 = 0x1 << 1
+    static let LeftBomb         : UInt32 = 0x1 << 2
+    static let RightBomb        : UInt32 = 0x1 << 3
+    static let Environment      : UInt32 = 0x1 << 4
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
@@ -53,7 +53,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         leftPointLbl.text = String(GameState.shared.leftScore)
         rightPointLbl.text = String(GameState.shared.rightScore)
         
-        self.physicsWorld.gravity = CGVector.init(dx: 0.0, dy: 0)
+        self.physicsWorld.gravity = CGVector.init(dx: 0.0, dy: -6)
         physicsWorld.contactDelegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(bombAttack(notification:)), name: NSNotification.Name("bomb"), object: nil)
@@ -72,12 +72,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func didBegin(_ contact: SKPhysicsContact) {
         
-        if (contact.bodyA.node == leftSquirrel && contact.bodyB.categoryBitMask == PhysicsCategory.LeftBomb) ||
-            (contact.bodyA.node == rightSquirrel && contact.bodyB.categoryBitMask == PhysicsCategory.RightBomb) ||
-            (contact.bodyB.node == rightSquirrel && contact.bodyA.categoryBitMask == PhysicsCategory.RightBomb) ||
-            (contact.bodyB.node == rightSquirrel && contact.bodyA.categoryBitMask == PhysicsCategory.RightBomb) {
-            return
-        }
+//        if (contact.bodyA.node == leftSquirrel && contact.bodyB.categoryBitMask == PhysicsCategory.LeftBomb) ||
+//            (contact.bodyA.node == rightSquirrel && contact.bodyB.categoryBitMask == PhysicsCategory.RightBomb) ||
+//            (contact.bodyB.node == rightSquirrel && contact.bodyA.categoryBitMask == PhysicsCategory.RightBomb) ||
+//            (contact.bodyB.node == rightSquirrel && contact.bodyA.categoryBitMask == PhysicsCategory.RightBomb) {
+//            return
+//        }
         
         if let bodyOne = contact.bodyA.node as? SKSpriteNode, let bodyTwo = contact.bodyB.node as? SKSpriteNode {
             bombExplode(bodyOne: bodyOne, bodyTwo: bodyTwo)
@@ -211,8 +211,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         bomb.physicsBody = SKPhysicsBody(rectangleOf: bomb.size)
         bomb.physicsBody?.categoryBitMask = bombCategory
-        bomb.physicsBody?.contactTestBitMask = PhysicsCategory.All
+        //bomb.physicsBody?.contactTestBitMask = PhysicsCategory.All
         bomb.physicsBody?.collisionBitMask = physicsCategory
+        bomb.physicsBody?.affectedByGravity = false
 
         
         addChild(bomb)
@@ -296,8 +297,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         leftSquirrel.anchorPoint.y = 0.5
         leftSquirrel.zPosition = 1
         leftSquirrel.physicsBody = SKPhysicsBody(rectangleOf: leftSquirrel.size)
-        leftSquirrel.physicsBody?.isDynamic = false
+        //leftSquirrel.physicsBody?.isDynamic = false
         leftSquirrel.physicsBody?.categoryBitMask = PhysicsCategory.LeftSquirrel
+        leftSquirrel.physicsBody?.collisionBitMask = PhysicsCategory.RightBomb
         addChild(leftSquirrel)
         
         rightSquirrel.position = CGPoint(x: 307.839, y: -89.305)
@@ -306,7 +308,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         rightSquirrel.anchorPoint.y = 0.5
         rightSquirrel.zPosition = 1
         rightSquirrel.physicsBody = SKPhysicsBody(rectangleOf: rightSquirrel.size)
-        rightSquirrel.physicsBody?.isDynamic = false
+        //rightSquirrel.physicsBody?.isDynamic = false
         rightSquirrel.physicsBody?.categoryBitMask = PhysicsCategory.RightSquirrel
         addChild(rightSquirrel)
         
