@@ -25,6 +25,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var bombCounter = 0
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
+    var bombCounter = 0
     var rightPointLbl = SKLabelNode()
     var leftPointLbl = SKLabelNode()
     let leftSquirrel = SKSpriteNode(imageNamed: "minisquirrelRight")
@@ -47,6 +48,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsWorld.gravity = CGVector.init(dx: 0.0, dy: 0)
         physicsWorld.contactDelegate = self
         
+        NotificationCenter.default.addObserver(self, selector: #selector(bombAttack(notification:)), name: NSNotification.Name("bomb"), object: nil)
+    }
+    
+    @objc func bombAttack(notification: NSNotification) {
+        
+        guard let text = notification.userInfo?["position"] as? String else { return }
+        addBomb(player: leftSquirrel, position: CGPointFromString(text))
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -151,8 +159,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func addBomb(player: SKSpriteNode, position: CGPoint) {
         
-        appDelegate.multiplayerManager.sendData(position: NSStringFromCGPoint(position))
-        
         var physicsCategory: UInt32
         var bombCategory: UInt32
         var loopFrom, loopTo: CGFloat
@@ -243,6 +249,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         addBomb(player: currentPlayer, position: touchLocation)
+        appDelegate.multiplayerManager.sendData(position: NSStringFromCGPoint(touchLocation))
         }
     
     func setupMatchfield() {
@@ -301,33 +308,5 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         rightTree.physicsBody = SKPhysicsBody(rectangleOf: rightTree.size)
         addChild(rightTree)
     }
-    
-  
-    
-    
-}
-
-extension GameScene: MultiplayerServiceManagerDelegate {
-    func foundPeer() {
-        
-    }
-    
-    func lostPeer() {
-        
-    }
-    
-    func invitationWasReceived(fromPeer: String) {
-        
-    }
-    
-    func connectedWithPeer(peerID: MCPeerID) {
-        
-    }
-    
-    func bombAttack(position: String) {
-        
-        addBomb(player: leftSquirrel, position: CGPointFromString(position))
-    }
-    
     
 }
