@@ -154,7 +154,6 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="playerLbl" destination="dny-88-qla" id="ApO-et-oc2"/>
-                                            <segue destination="BV1-FR-VrT" kind="show" identifier="GameViewController" id="uMa-dt-fBg"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -174,6 +173,7 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="4Hp-eN-3zF" id="zqr-LU-D0o"/>
+                        <segue destination="BV1-FR-VrT" kind="show" identifier="GameViewController" id="YBG-WM-6fo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bOE-ZJ-R2h" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -201,6 +201,6 @@
         <image name="wald" width="960" height="640"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="VD5-R4-4e8"/>
+        <segue reference="YBG-WM-6fo"/>
     </inferredMetricsTieBreakers>
 </document>

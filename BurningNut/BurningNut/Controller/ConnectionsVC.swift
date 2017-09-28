@@ -56,8 +56,8 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedPeer = appDelegate.multiplayerManager.foundPeers[indexPath.row] as MCPeerID
         GameState.shared.playerNumber = 1
+        let selectedPeer = appDelegate.multiplayerManager.foundPeers[indexPath.row] as MCPeerID
         appDelegate.multiplayerManager.browser.invitePeer(selectedPeer, to: appDelegate.multiplayerManager.session, withContext: nil, timeout: 20)
     }
     

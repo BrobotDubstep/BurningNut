@@ -11,13 +11,14 @@ import GameplayKit
 import MultipeerConnectivity
 
 struct PhysicsCategory {
-    static let None      : UInt32 = 0
-    static let All       : UInt32 = UInt32.max
-    static let RightSquirrel: UInt32 = 0b10
-    static let LeftSquirrel: UInt32 = 0b1
-    static let LeftBomb: UInt32 = 0b11
-    static let RightBomb: UInt32 = 0b100
-    
+    static let None             : UInt32 = 0
+    static let All              : UInt32 = UInt32.max
+    static let RightSquirrel    : UInt32 = 0x1 << 0
+    static let LeftSquirrel     : UInt32 = 0x1 << 1
+    static let LeftBomb         : UInt32 = 0x1 << 2
+    static let RightBomb        : UInt32 = 0x1 << 3
+    static let Environment      : UInt32 = 0x1 << 4
+    static let Frame            : UInt32 = 0x1 << 5
 }
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
@@ -45,14 +46,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.setupMatchfield()
         
-        if(GameState.shared.playerNumber == 0) {
-            playerNumber = 1
-            GameState.shared.playerNumber = 1
-        } else {
-            playerNumber = GameState.shared.playerNumber
-        }
+//        if(GameState.shared.playerNumber == 0) {
+//            playerNumber = 1
+//            GameState.shared.playerNumber = 1
+//        } else {
+//            playerNumber = GameState.shared.playerNumber
+//        }
         
-//        playerNumber = GameState.shared.playerNumber
+        playerNumber = GameState.shared.playerNumber
         
         if(playerNumber == 1) {
             playerTurnLbl.text = playerTurnTxt
@@ -277,8 +278,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             bomb.physicsBody = SKPhysicsBody(rectangleOf: bomb.size)
             bomb.physicsBody?.categoryBitMask = bombCategory
-            bomb.physicsBody?.contactTestBitMask = PhysicsCategory.All
-            bomb.physicsBody?.collisionBitMask = physicsCategory
+            bomb.physicsBody?.contactTestBitMask = physicsCategory | PhysicsCategory.Environment
+            //bomb.physicsBody?.collisionBitMask = physicsCategory
+            bomb.physicsBody?.affectedByGravity = false
             
             
             addChild(bomb)
