@@ -35,12 +35,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let rightTree = SKSpriteNode(imageNamed: "tree-1")
     let explosionSound = SKAction.playSoundFileNamed("explosion.mp3", waitForCompletion: true)
     var playerTurn = 1
+    var playerNumber = 0
     var flugbahnCalc = CalcFlugbahn()
     
     
     override func didMove(to view: SKView) {
         
         self.setupMatchfield()
+        
+        self.playerNumber = GameState.shared.playerNumber
         
         leftPointLbl.text = String(GameState.shared.leftScore)
         rightPointLbl.text = String(GameState.shared.rightScore)
@@ -52,9 +55,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     @objc func bombAttack(notification: NSNotification) {
-        
         guard let text = notification.userInfo?["position"] as? String else { return }
-        addBomb(player: leftSquirrel, position: CGPointFromString(text))
+        var squirrel = SKSpriteNode()
+        if(GameState.shared.playerNumber == 1) {
+            squirrel = leftSquirrel
+        } else {
+            squirrel = rightSquirrel
+        }
+        addBomb(player: squirrel, position: CGPointFromString(text))
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -131,10 +139,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if(playerTurn == 1) {
             playerTurn = 2
-            GameState.shared.playerNumber = 2
         } else {
             playerTurn = 1
-            GameState.shared.playerNumber = 1
         }
     }
     
@@ -188,7 +194,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             loopStep = -1
         }
         
-        if(bombCounter == 0 && GameState.shared.playerNumber == playerTurn) {
+        if(bombCounter == 0 && playerNumber == playerTurn) {
         let bomb = SKSpriteNode(imageNamed: "bomb")
         bomb.position = CGPoint(x: player.position.x, y: player.position.y)
         bomb.size = CGSize(width: 15, height: 30)
@@ -245,7 +251,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
       
-        
+        if(playerNumber == playerTurn) {
         var currentPlayer: SKSpriteNode
         guard let touch = touches.first else {
             return
@@ -260,6 +266,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         addBomb(player: currentPlayer, position: touchLocation)
         appDelegate.multiplayerManager.sendData(position: NSStringFromCGPoint(touchLocation))
+        }
         }
     
     func setupMatchfield() {
