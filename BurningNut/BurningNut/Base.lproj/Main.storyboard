@@ -30,7 +30,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="F19-LM-2EK">
-                                <rect key="frame" x="161.5" y="5.5" width="245" height="309"/>
+                                <rect key="frame" x="161.5" y="33" width="245" height="254"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Burning Nut" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FLk-HI-hXx">
                                         <rect key="frame" x="0.0" y="0.0" width="245" height="48"/>
@@ -52,26 +52,10 @@
                                         </constraints>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="TXx-pa-dEH">
-                                        <rect key="frame" x="0.0" y="208" width="245" height="101"/>
+                                        <rect key="frame" x="0.0" y="208" width="245" height="46"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="koE-QJ-XM7">
-                                                <rect key="frame" x="0.0" y="0.0" width="245" height="46"/>
-                                                <color key="backgroundColor" red="0.56471502750000002" green="0.39872318359999998" blue="0.22171230250000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="245" id="9C0-Zv-dhj"/>
-                                                    <constraint firstAttribute="height" constant="46" id="iCl-ZO-Qs6"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="20"/>
-                                                <color key="tintColor" red="0.56471502750000002" green="0.39872318359999998" blue="0.22171230250000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <state key="normal" title="lokaler Multiplayer">
-                                                    <color key="titleColor" red="0.99548257529999995" green="0.96118383730000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </state>
-                                                <connections>
-                                                    <segue destination="BV1-FR-VrT" kind="show" id="VD5-R4-4e8"/>
-                                                </connections>
-                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gsf-Ca-KDq">
-                                                <rect key="frame" x="0.0" y="55" width="245" height="46"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="245" height="46"/>
                                                 <color key="backgroundColor" red="0.56471502750000002" green="0.39872318359999998" blue="0.22171230250000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="245" id="pt5-57-RGC"/>
@@ -200,7 +184,4 @@
         <image name="bomb" width="360" height="720"/>
         <image name="wald" width="960" height="640"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="YBG-WM-6fo"/>
-    </inferredMetricsTieBreakers>
 </document>
