@@ -29,23 +29,21 @@ class GameOverScene: SKScene {
         label.fontColor = SKColor.black
         label.position = CGPoint(x: size.width/2, y: size.height/2)
         addChild(label)
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         GameState.shared.leftScore = 0
         GameState.shared.rightScore = 0
         
-        if let view = self.view as SKView? {
-            if let scene = SKScene(fileNamed: "GameScene") {
-                scene.scaleMode = .aspectFill
-                view.presentScene(scene)
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: 3.0),
+            SKAction.run() {
+                
+                if let scene = SKScene(fileNamed: "GameScene") {
+                    let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+                    scene.scaleMode = .aspectFill
+                    self.view?.presentScene(scene, transition:reveal)
+                }
             }
-            
-            view.ignoresSiblingOrder = true
-            view.showsFPS = true
-            view.showsNodeCount = true
-        }
+            ]))
     }
     
     required init(coder aDecoder: NSCoder) {
