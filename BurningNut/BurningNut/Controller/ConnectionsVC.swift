@@ -102,5 +102,7 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
     }
     
-    func bombAttack(position: String) {}
+    func bombAttack(position: String) {
+        print(position)
+    }
 }

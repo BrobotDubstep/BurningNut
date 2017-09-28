@@ -22,6 +22,7 @@ struct PhysicsCategory {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    var bombCounter = 0
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     var rightPointLbl = SKLabelNode()
@@ -36,8 +37,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var flugbahnCalc = CalcFlugbahn()
     
     
-   
-
     override func didMove(to view: SKView) {
         
         self.setupMatchfield()

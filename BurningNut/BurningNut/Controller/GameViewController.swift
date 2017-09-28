@@ -12,16 +12,6 @@ import GameplayKit
 
 class GameViewController: UIViewController {
     
-    private var _playerCell: Player!
-    
-    var playerCell: Player {
-        get {
-            return _playerCell
-        } set {
-            _playerCell = newValue
-        }
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         
     }
