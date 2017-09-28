@@ -36,29 +36,15 @@ class GameOverScene: SKScene {
         run(SKAction.sequence([
             SKAction.wait(forDuration: 3.0),
             SKAction.run() {
-                let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
-                let scene = GameScene(size: size)
-                scene.scaleMode = .aspectFill
-                self.view?.presentScene(scene, transition:reveal)
+                
+                if let scene = SKScene(fileNamed: "GameScene") {
+                    let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+                    scene.scaleMode = .aspectFill
+                    self.view?.presentScene(scene, transition:reveal)
+                }
             }
             ]))
     }
-    
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//
-//        GameState.shared.leftScore = 0
-//        GameState.shared.rightScore = 0
-//
-//        if let view = self.view as SKView? {
-//            if let scene = SKScene(fileNamed: "GameScene") {
-//                scene.scaleMode = .aspectFill
-//                view.presentScene(scene)
-//            }
-//
-//            view.ignoresSiblingOrder = true
-//
-//        }
-//    }
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
