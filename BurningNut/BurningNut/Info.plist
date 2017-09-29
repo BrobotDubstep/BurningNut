@@ -42,5 +42,20 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Lokaler Multiplayer</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>localMultiplayer</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Online Multiplayer</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>onlineMultiplayer</string>
+		</dict>
+	</array>
 </dict>
 </plist>
