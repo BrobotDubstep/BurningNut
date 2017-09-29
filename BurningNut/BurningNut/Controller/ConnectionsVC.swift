@@ -30,10 +30,11 @@ class ConnectionsVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     @IBAction func dismissBtn(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
         appDelegate.multiplayerManager.session.disconnect()
         appDelegate.multiplayerManager.browser.stopBrowsingForPeers()
         appDelegate.multiplayerManager.advertiser.stopAdvertisingPeer()
+        appDelegate.multiplayerManager.foundPeers.removeAll()
+        dismiss(animated: true, completion: nil)
     }
     
     
