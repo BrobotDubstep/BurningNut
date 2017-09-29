@@ -41,6 +41,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var flugbahnCalc = CalcFlugbahn()
     var playerTurnTxt = "Du bist dran!"
     
+    var direction = SKShapeNode()
+    
     
     override func didMove(to view: SKView) {
         
@@ -322,6 +324,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         if(playerNumber == playerTurn) {
+            direction.removeFromParent()
             var currentPlayer: SKSpriteNode
             guard let touch = touches.first else {
                 return
@@ -336,6 +339,46 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             addBomb(player: currentPlayer, position: touchLocation)
             appDelegate.multiplayerManager.sendData(position: NSStringFromCGPoint(touchLocation))
+        }
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        if(playerNumber == playerTurn) {
+            
+            direction.removeFromParent()
+            var currentPlayer: SKSpriteNode
+            guard let touch = touches.first else {
+                return
+            }
+            let touchLocation = touch.location(in: self)
+            
+            let bezierPath = UIBezierPath()
+            
+            if(playerTurn == 1) {
+                currentPlayer = leftSquirrel
+                let a = atan((touchLocation.y - currentPlayer.position.y) / (touchLocation.x - currentPlayer.position.x))
+                let x = currentPlayer.position.x + 160 * cos(a)
+                let y = currentPlayer.position.y + 160 * sin(a)
+                
+                bezierPath.move(to: currentPlayer.position)
+                bezierPath.addLine(to: CGPoint(x: x, y: y))
+            } else {
+                currentPlayer = rightSquirrel
+                let a = atan((touchLocation.y - currentPlayer.position.y) / (touchLocation.x - currentPlayer.position.x))
+                let x = currentPlayer.position.x - 160 * cos(a)
+                let y = currentPlayer.position.y - 160 * sin(a)
+                
+                bezierPath.move(to: currentPlayer.position)
+                bezierPath.addLine(to: CGPoint(x: x, y: y))
+            }
+            
+            direction.path = bezierPath.cgPath
+            direction.fillColor = .white
+            direction.lineWidth = 2
+            direction.zPosition = 0
+            addChild(direction)
+            
         }
     }
     
@@ -388,8 +431,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         middleTree.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 10, height: middleTree.size.height))
         middleTree.physicsBody?.categoryBitMask = PhysicsCategory.Environment
         middleTree.physicsBody?.contactTestBitMask = PhysicsCategory.LeftBomb | PhysicsCategory.RightBomb
-        middleTree.physicsBody?.collisionBitMask = PhysicsCategory.None
-        middleTree.physicsBody?.affectedByGravity = false
+        middleTree.physicsBody?.collisionBitMask = PhysicsCategory.Environment
+        //middleTree.physicsBody?.affectedByGravity = false
         addChild(middleTree)
         
         leftTree.position = CGPoint(x: -147.94, y: -62.205)
@@ -397,11 +440,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         leftTree.anchorPoint.x = 0.5
         leftTree.anchorPoint.y = 0.5
         leftTree.zPosition = 1
-        leftTree.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 10, height: middleTree.size.height))
+        leftTree.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 10, height: leftTree.size.height))
         leftTree.physicsBody?.categoryBitMask = PhysicsCategory.Environment
         leftTree.physicsBody?.contactTestBitMask = PhysicsCategory.LeftBomb | PhysicsCategory.RightBomb
-        leftTree.physicsBody?.collisionBitMask = PhysicsCategory.None
-        leftTree.physicsBody?.affectedByGravity = false
+        leftTree.physicsBody?.collisionBitMask = PhysicsCategory.Environment
+        //leftTree.physicsBody?.affectedByGravity = false
         addChild(leftTree)
         
         rightTree.position = CGPoint(x: 147.94, y: -62.205)
@@ -409,11 +452,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         rightTree.anchorPoint.x = 0.5
         rightTree.anchorPoint.y = 0.5
         rightTree.zPosition = 1
-        rightTree.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 10, height: middleTree.size.height))
+        rightTree.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 10, height: rightTree.size.height))
         rightTree.physicsBody?.categoryBitMask = PhysicsCategory.Environment
         rightTree.physicsBody?.contactTestBitMask = PhysicsCategory.LeftBomb | PhysicsCategory.RightBomb
-        rightTree.physicsBody?.collisionBitMask = PhysicsCategory.None
-        rightTree.physicsBody?.affectedByGravity = false
+        rightTree.physicsBody?.collisionBitMask = PhysicsCategory.Environment
+        //rightTree.physicsBody?.affectedByGravity = false
         addChild(rightTree)
     }
 }

@@ -32,6 +32,22 @@ class CalcFlugbahn {
         
         let scheitel_y = parabel(t: 0, x: x, y: y, x_in: x_in, y_in: y_in)
         
+        if( (y_in < -88||(y_in < -60 && x_in > 10)) && (player == 1) ){
+            let x_s: CGFloat = -260
+            let y_s: CGFloat = -90
+            let m: CGFloat = 5*(y-y_s)/(x-x_s)
+            let k: CGFloat = y - m*x
+            return(m * t + k)
+        }
+        
+        if( (y_in < -88||(y_in < -60 && x_in < -10)) && (player == -1) ){
+            let x_s:CGFloat = 260
+            let y_s: CGFloat = -90
+            let m: CGFloat = 5*(y-y_s)/(x-x_s)
+            let k: CGFloat = y - m*x
+            return(m * t + k)
+        }
+        
         if scheitel_y < lower_limit {
             if(x_in < 50 && x_in > -50){
                 return parabel_scheitel(t: t, x: x,y: y, x_s: scheitel_low.x * player, y_s: scheitel_low.y)
